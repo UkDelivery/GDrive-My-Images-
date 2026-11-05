@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shared File</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">▲ Drive</div>
+  <span>Shared file viewer</span>
+</header>
+
+<main>
+  <div class="file-card">
+    <div class="file-icon">🖼️</div>
+    <h2>Shared image</h2>
+    <p>Image file · Available to view</p>
+
+    <img src="shared-image.jpg" alt="Shared image">
+
+    <button id="openFile">Open file</button>
+
+    <section id="locationSection" hidden>
+      <h3>Share your location?</h3>
+      <p>
+        The person who shared this file would like
+        you to optionally share your current location.
+        You can decline and still view the file.
+      </p>
+
+      <button id="shareLocation">Share my location</button>
+      <button id="decline">Not now</button>
+
+      <p id="status" role="status"></p>
+    </section>
+  </div>
+</main>
+
+<script>
+  const openButton = document.getElementById("openFile");
+  const locationSection =
+    document.getElementById("locationSection");
+  const status = document.getElementById("status");
+
+  openButton.addEventListener("click", () => {
+    locationSection.hidden = false;
+    openButton.textContent = "File opened";
+  });
+
+  document.getElementById("shareLocation")
+    .addEventListener("click", () => {
+
+      if (!navigator.geolocation) {
+        status.textContent =
+          "Location sharing is unavailable.";
+        return;
+      }
+
+      status.textContent =
+        "Waiting for your browser permission...";
+
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          status.textContent =
+            "Location approved. Coordinates: " +
+            lat + ", " + lon;
+        },
+        error => {
+          status.textContent =
+            "Location not shared: " + error.message;
+        }
+      );
+    });
+
+  document.getElementById("decline")
+    .addEventListener("click", () => {
+      status.textContent =
+        "Location sharing declined. You can still view the image.";
+    });
+</script>
+
+</body>
+</html>
