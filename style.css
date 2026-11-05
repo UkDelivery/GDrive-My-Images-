@@ -1,209 +1,286 @@
-
-* {
-  box-sizing: border-box;
-}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Drive</title>
+<style>
+* { box-sizing: border-box; }
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  color: #202124;
-  background: #f8fafd;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f8fafd;
+    color: #202124;
 }
-
 .topbar {
-  height: 70px;
-  display: flex;
-  align-items: center;
-  padding: 0 25px;
-  gap: 30px;
-  background: white;
-  border-bottom: 1px solid #ddd;
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #dadce0;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    gap: 30px;
 }
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 21px;
-  min-width: 200px;
-}
-
-.drive-symbol {
-  color: #4285f4;
-  font-size: 27px;
-}
-
-.search {
-  width: 50%;
-  padding: 15px 20px;
-  border: none;
-  border-radius: 25px;
-  background: #edf2fa;
-  font-size: 15px;
-}
-
-.avatar {
-  margin-left: auto;
-  background: #4285f4;
-  color: white;
-  border-radius: 50%;
-  padding: 12px 15px;
-}
-
-.layout {
-  display: flex;
-  min-height: calc(100vh - 70px);
-}
-
-.sidebar {
-  width: 230px;
-  padding: 25px 15px;
-}
-
-.sidebar p {
-  padding: 13px;
-  border-radius: 25px;
-  cursor: pointer;
-}
-
-.sidebar .active {
-  background: #d3e3fd;
-}
-
-.new-button {
-  background: white;
-  border: none;
-  padding: 15px 25px;
-  border-radius: 15px;
-  box-shadow: 0 2px 5px #ddd;
-  margin-bottom: 20px;
-  font-size: 16px;
-}
-
-.content {
-  background: white;
-  flex: 1;
-  padding: 35px;
-  border-radius: 20px 0 0 0;
-}
-
-.subtitle {
-  color: #777;
-}
-
-.folder-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 30px;
-}
-
-.folder {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 12px;
-  text-align: left;
-  cursor: pointer;
-  color: #333;
-  font-size: 16px;
-}
-
-.folder:hover {
-  background: #f1f5fb;
-}
-
-.folder-icon {
-  font-size: 27px;
-}
-
-.back-button {
-  background: #edf2fa;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.file-card {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 20px;
-  max-width: 300px;
-  margin-top: 25px;
-}
-
-.file-card img {
-  width: 100%;
-  height: 170px;
-  object-fit: contain;
-}
-
-.large-image {
-  display: block;
-  max-width: 100%;
-  max-height: 450px;
-  margin: 25px auto;
-  object-fit: contain;
-}
-
-.consent {
-  max-width: 550px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  margin: 25px auto;
-}
-
-button {
-  background: #1a73e8;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  padding: 12px 20px;
-  margin: 5px;
-  cursor: pointer;
-}
-
-.secondary {
-  background: #edf2fa;
-  color: #333;
-}
-
-#status {
-  overflow-wrap: anywhere;
-  font-size: 13px;
-}
-
-[hidden] {
-  display: none !important;
-}
-
-@media (max-width: 650px) {
-  .sidebar {
-    display: none;
-  }
-
-  .content {
-    padding: 20px;
-  }
-
-  .folder-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .topbar {
-    padding: 10px;
+.logo {
+    display: flex;
+    align-items: center;
     gap: 10px;
-  }
-
-  .brand {
-    min-width: auto;
-    font-size: 16px;
-  }
-
-  .search {
-    width: 45%;
-  }
+    font-size: 23px;
+    white-space: nowrap;
 }
+.logo-icon { font-size: 30px; }
+.search {
+    background: #edf2fa;
+    border-radius: 25px;
+    padding: 12px 18px;
+    width: 50%;
+    max-width: 600px;
+}
+.search input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    font-size: 15px;
+}
+.avatar {
+    margin-left: auto;
+    background: #4285f4;
+    color: white;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+.layout { display: flex; min-height: calc(100vh - 70px); }
+.sidebar { width: 230px; padding: 20px 12px; }
+.new-button-container { position: relative; }
+.new-button {
+    background: white;
+    border: 1px solid #dadce0;
+    border-radius: 15px;
+    padding: 14px 25px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 25px;
+    width: 100%;
+    text-align: left;
+}
+.new-button:hover { background: #f1f3f4; }
+.new-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%; left: 0;
+    background: white;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    margin-top: 5px;
+    min-width: 180px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+.new-dropdown.show { display: block; }
+.new-dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+.new-dropdown-item:hover { background: #f1f3f4; }
+.nav-item {
+    padding: 13px 18px;
+    border-radius: 25px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+.nav-item:hover { background: #edf2fa; }
+.nav-item.active { background: #d3e3fd; }
+.main { flex: 1; padding: 30px; }
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.heading h2 { margin-top: 0; }
+.folder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+.folder {
+    background: white;
+    border: 1px solid #dadce0;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.folder:hover {
+    background: #f1f6ff;
+    transform: translateY(-2px);
+}
+.folder-icon { font-size: 35px; }
+.folder-name {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 500;
+}
+.folder-page { display: none; }
+.back-button {
+    background: #d3e3fd;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+.back-button:hover { background: #b9d4fa; }
+#folderContents { margin-top: 20px; }
+#folderContents ul {
+    list-style: none;
+    padding: 0;
+}
+#folderContents li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+@media (max-width: 700px) {
+    .topbar { padding: 0 10px; gap: 10px; }
+    .logo span { display: none; }
+    .search { width: 65%; }
+    .sidebar { width: 90px; padding: 15px 5px; }
+    .nav-item { font-size: 11px; padding: 12px 5px; text-align: center; }
+    .new-button { padding: 12px 5px; }
+    .main { padding: 18px; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+    <div class="logo">
+        <span class="logo-icon">📁</span>
+        <span>My Drive</span>
+    </div>
+    <div class="search">
+        🔍
+        <input type="text" id="searchInput" placeholder="Search in Drive">
+    </div>
+    <div class="avatar">M</div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+    <div class="new-button-container">
+        <button class="new-button" id="newBtn">＋ New</button>
+        <div class="new-dropdown" id="newDropdown">
+            <div class="new-dropdown-item">📄 Upload file</div>
+            <div class="new-dropdown-item">📁 New folder</div>
+            <div class="new-dropdown-item">📝 Google Docs</div>
+            <div class="new-dropdown-item">📊 Google Sheets</div>
+        </div>
+    </div>
+    <div class="nav-item active" data-nav="home">🏠 Home</div>
+    <div class="nav-item" data-nav="my-drive">📁 My Drive</div>
+    <div class="nav-item" data-nav="shared">👥 Shared with me</div>
+    <div class="nav-item" data-nav="recent">🕘 Recent</div>
+    <div class="nav-item" data-nav="starred">⭐ Starred</div>
+    <div class="nav-item" data-nav="trash">🗑️ Trash</div>
+</aside>
+
+<main class="main">
+<div id="homePage">
+    <div class="heading">
+        <h2>Welcome to My Drive</h2>
+        <span>☷　▦</span>
+    </div>
+    <h3>Folders</h3>
+    <div class="folder-grid" id="folderGrid">
+        <div class="folder" data-folder="My Pics😉" onclick="openFolder('My Pics😉')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">My Pics😉</div>
+        </div>
+        <div class="folder" data-folder="School work" onclick="openFolder('School work')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">School work</div>
+        </div>
+        <div class="folder" data-folder="Holiday⛱️" onclick="openFolder('Holiday⛱️')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">Holiday⛱️</div>
+        </div>
+        <div class="folder" data-folder="Friends" onclick="openFolder('Friends')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">Friends</div>
+        </div>
+        <div class="folder" data-folder="Ex" onclick="openFolder('Ex')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">Ex</div>
+        </div>
+    </div>
+</div>
+
+<div id="folderPage" class="folder-page">
+    <button class="back-button" onclick="goHome()">← Back to Drive</button>
+    <h2 id="folderTitle">📁 Folder</h2>
+    <div id="folderContents"></div>
+</div>
+</main>
+</div>
+
+<script>
+const folderContents = {
+    'My Pics😉': ['sunset.jpg', 'beach.png', 'family.jpeg', 'mountains.png'],
+    'School work': ['essay.docx', 'project slides.pdf', 'notes.txt', 'research-data.csv'],
+    'Holiday⛱️': ['itinerary.pdf', 'tickets.eml', 'photos.zip', 'hotel-booking.pdf'],
+    'Friends': ['group-photo.jpg', 'birthday-party.mp4', 'reunion-2026.png'],
+    'Ex': []
+};
+
+function openFolder(folderName) {
+    document.getElementById("homePage").style.display = "none";
+    document.getElementById("folderPage").style.display = "block";
+    document.getElementById("folderTitle").textContent = "📁 " + folderName;
+    
+    const files = folderContents[folderName] || [];
+    const contentsDiv = document.getElementById("folderContents");
+    contentsDiv.innerHTML = files.length
+        ? `<ul>${files.map(f => `<li>📄 ${f}</li>`).join('')}</ul>`
+        : '<p>This folder is empty.</p>';
+}
+
+function goHome() {
+    document.getElementById("folderPage").style.display = "none";
+    document.getElementById("homePage").style.display = "block";
+}
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', e => {
+    const query = e.target.value.toLowerCase();
+    document.querySelectorAll('.folder').forEach(folder => {
+        const name = folder.dataset.folder.toLowerCase();
+        folder.style.display = name.includes(query) ? '' : 'none';
+    });
+});
+
+// Navigation active state
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function() {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+// New button dropdown
+const newBtn = document.getElementById('newBtn');
+const newDropdown = document.getElementById('newDropdown');
+newBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    newDropdown.classList.toggle('show');
+});
+document.addEventListener('click', () => newDropdown.classList.remove('show'));
+newDropdown.addEventListener('click', e => e.stopPropagation());
+</script>
+</body>
+</html>
