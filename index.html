@@ -5,8 +5,221 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Files</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f8fafd;
+  color: #202124;
+}
+
+.topbar {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+  gap: 30px;
+  border-bottom: 1px solid #ddd;
+  background: white;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 23px;
+}
+
+.search {
+  background: #edf2fa;
+  padding: 12px 18px;
+  border-radius: 25px;
+  width: 45%;
+}
+
+.search input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 90%;
+  font-size: 15px;
+}
+
+.top-icons {
+  margin-left: auto;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.avatar {
+  background: #4285f4;
+  color: white;
+  padding: 10px 13px;
+  border-radius: 50%;
+}
+
+.layout {
+  display: flex;
+}
+
+.sidebar {
+  width: 230px;
+  padding: 20px 12px;
+}
+
+.new-button {
+  padding: 15px 25px;
+  border: none;
+  border-radius: 15px;
+  background: #c2e7ff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 25px;
+}
+
+.nav-item {
+  padding: 13px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  background: #d3e3fd;
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+  min-width: 0;
+}
+
+.heading,
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin: 20px 0 35px;
+}
+
+.folder-card {
+  background: #edf2fa;
+  padding: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.folder-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.folder-name {
+  margin-top: 15px;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  background: white;
+}
+
+.file-row button {
+  margin-left: auto;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 18px;
+  background: #d3e3fd;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #b9d4fa;
+}
+
+.preview-area {
+  background: #edf2fa;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.preview-area img {
+  max-width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+}
+
+.consent {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  max-width: 550px;
+  border: 1px solid #ddd;
+}
+
+.light-button {
+  background: #eee;
+}
+
+#status {
+  overflow-wrap: anywhere;
+  color: #188038;
+  margin-top: 15px;
+}
+
+.back {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 650px) {
+  .sidebar {
+    width: 100px;
+  }
+
+  .nav-item {
+    font-size: 12px;
+    padding: 12px 5px;
+  }
+
+  .main {
+    padding: 15px;
+  }
+
+  .topbar {
+    padding: 0 10px;
+    gap: 10px;
+  }
+
+  .search {
+    width: 45%;
+  }
+}
+</style>
 </head>
+
 <body>
 
 <header class="topbar">
@@ -37,13 +250,13 @@
     <button class="new-button">＋ New</button>
 
     <nav>
-      <div class="nav-item active">⌂ <span>Home</span></div>
-      <div class="nav-item">▣ <span>My Drive</span></div>
-      <div class="nav-item">♧ <span>Shared with me</span></div>
-      <div class="nav-item">◷ <span>Recent</span></div>
-      <div class="nav-item">☆ <span>Starred</span></div>
-      <div class="nav-item">▤ <span>Spam</span></div>
-      <div class="nav-item">▱ <span>Trash</span></div>
+      <div class="nav-item active">⌂ Home</div>
+      <div class="nav-item">▣ My Drive</div>
+      <div class="nav-item">♧ Shared with me</div>
+      <div class="nav-item">◷ Recent</div>
+      <div class="nav-item">☆ Starred</div>
+      <div class="nav-item">▤ Spam</div>
+      <div class="nav-item">▱ Trash</div>
     </nav>
   </aside>
 
@@ -51,7 +264,7 @@
 
     <div class="heading">
       <h2>Welcome to Drive</h2>
-      <span class="view-icons">☷　▦</span>
+      <span>☷　▦</span>
     </div>
 
     <h3>Suggested folders</h3>
@@ -73,7 +286,11 @@
     </div>
 
     <section id="preview" hidden>
-      <button id="backButton" class="back">← Back to Drive</button>
+
+      <button id="backButton" class="back">
+        ← Back to Drive
+      </button>
+
       <h2>Shared-image.jpg</h2>
 
       <div class="preview-area">
@@ -81,7 +298,9 @@
       </div>
 
       <div class="consent">
+
         <h3>Optional location sharing</h3>
+
         <p>
           Would you like to voluntarily share your
           current location with the person who shared
@@ -89,9 +308,16 @@
           to the image.
         </p>
 
-        <button id="shareLocation">Share my location</button>
-        <button id="decline" class="light-button">No thanks</button>
-        <p id="status"></p>
+        <button id="shareLocation">
+          Share my location
+        </button>
+
+        <button id="decline" class="light-button">
+          No thanks
+        </button>
+
+        <p id="status" aria-live="polite"></p>
+
       </div>
     </section>
 
@@ -99,6 +325,9 @@
 </div>
 
 <script>
+
+// FOLDERS
+
 const folderNames = [
   "Holiday pics",
   "Me 😉😉",
@@ -109,69 +338,147 @@ const folderNames = [
 const folderGrid = document.getElementById("folderGrid");
 
 folderNames.forEach(name => {
+
   const folder = document.createElement("div");
+
   folder.className = "folder-card";
 
-  folder.innerHTML = `
-    <div class="folder-top">
-      <span class="folder-icon">📁</span>
-      <span>⋮</span>
-    </div>
-    <div class="folder-name">${name}</div>
-  `;
+  const top = document.createElement("div");
+  top.className = "folder-top";
+
+  const icon = document.createElement("span");
+  icon.className = "folder-icon";
+  icon.textContent = "📁";
+
+  const dots = document.createElement("span");
+  dots.textContent = "⋮";
+
+  const folderName = document.createElement("div");
+  folderName.className = "folder-name";
+  folderName.textContent = name;
+
+  top.append(icon, dots);
+  folder.append(top, folderName);
 
   folderGrid.appendChild(folder);
 });
 
+
+// FILE PREVIEW
+
 const preview = document.getElementById("preview");
 const mainContent = document.querySelector(".main");
 
-document.getElementById("openFile").onclick = () => {
+const heading = document.querySelector(".heading");
+const headings = document.querySelectorAll(".main > h3");
+const sectionHeading = document.querySelector(".section-heading");
+const fileList = document.querySelector(".file-list");
+
+function openFile() {
+
   preview.hidden = false;
-  document.querySelector(".heading").hidden = true;
-  document.querySelector("h3").hidden = true;
+
+  heading.hidden = true;
+
+  headings[0].hidden = true;
+
   folderGrid.hidden = true;
-  document.querySelector(".section-heading").hidden = true;
-  document.querySelector(".file-list").hidden = true;
-};
+
+  sectionHeading.hidden = true;
+
+  fileList.hidden = true;
+
+  document.getElementById("status").textContent = "";
+
+}
+
+document.getElementById("openFile").onclick = openFile;
+
+
+// BACK TO DRIVE
 
 document.getElementById("backButton").onclick = () => {
+
   preview.hidden = true;
-  document.querySelector(".heading").hidden = false;
-  document.querySelector("h3").hidden = false;
+
+  heading.hidden = false;
+
+  headings[0].hidden = false;
+
   folderGrid.hidden = false;
-  document.querySelector(".section-heading").hidden = false;
-  document.querySelector(".file-list").hidden = false;
+
+  sectionHeading.hidden = false;
+
+  fileList.hidden = false;
+
 };
+
+
+// OPTIONAL LOCATION SHARING
 
 const status = document.getElementById("status");
 
 document.getElementById("shareLocation").onclick = () => {
+
   if (!navigator.geolocation) {
-    status.textContent = "Location unavailable.";
+
+    status.textContent = "Location is not supported by this browser.";
+
     return;
   }
 
-  status.textContent = "Waiting for your permission...";
+  status.textContent = "Waiting for your browser's permission...";
 
   navigator.geolocation.getCurrentPosition(
+
     position => {
+
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
       status.textContent =
-        "Location approved. Coordinates: " +
-        position.coords.latitude + ", " +
-        position.coords.longitude +
-        ". These remain on your screen and are not transmitted.";
+        "Location successfully obtained. Latitude: " +
+        latitude +
+        " | Longitude: " +
+        longitude +
+        ". These coordinates remain on your screen and are not transmitted.";
+
     },
+
     error => {
-      status.textContent = "Location not shared.";
+
+      if (error.code === error.PERMISSION_DENIED) {
+
+        status.textContent = "Location permission denied. The image is still available.";
+
+      } else {
+
+        status.textContent = "Unable to obtain location. The image is still available.";
+
+      }
+
+    },
+
+    {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 0
     }
+
   );
+
 };
 
+
+// DECLINE LOCATION
+
 document.getElementById("decline").onclick = () => {
+
   status.textContent =
     "Location sharing declined. The image remains available.";
+
 };
+
 </script>
 
 </body>
