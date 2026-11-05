@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Drive — Location Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="logo">
+        <span class="logo-icon">📁</span>
+        <span>My Drive</span>
+    </div>
+    <div class="search">
+        🔍
+        <input type="text" id="searchInput" placeholder="Search in Drive">
+    </div>
+    <div class="avatar">M</div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+    <div class="new-button-container">
+        <button class="new-button" id="newBtn">＋ New</button>
+        <div class="new-dropdown" id="newDropdown">
+            <div class="new-dropdown-item">📄 Upload file</div>
+            <div class="new-dropdown-item">📁 New folder</div>
+            <div class="new-dropdown-item">📝 Google Docs</div>
+            <div class="new-dropdown-item">📊 Google Sheets</div>
+        </div>
+    </div>
+    <div class="nav-item active">🏠 Home</div>
+    <div class="nav-item">📁 My Drive</div>
+    <div class="nav-item">👥 Shared with me</div>
+    <div class="nav-item">🕘 Recent</div>
+    <div class="nav-item">⭐ Starred</div>
+    <div class="nav-item">🗑️ Trash</div>
+</aside>
+
+<main class="main">
+<div id="homePage">
+    <div class="heading">
+        <h2>Welcome to My Drive</h2>
+        <span>☷　▦</span>
+    </div>
+    <h3>Folders</h3>
+    <div class="folder-grid">
+        <div class="folder" onclick="handleFolderClick('My Pics😉')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">My Pics😉</div>
+        </div>
+        <div class="folder" onclick="handleFolderClick('School work')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">School work</div>
+        </div>
+        <div class="folder" onclick="handleFolderClick('Holiday⛱️')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">Holiday⛱️</div>
+        </div>
+        <div class="folder" onclick="handleFolderClick('Friends')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">Friends</div>
+        </div>
+        <div class="folder" onclick="handleFolderClick('Ex')">
+            <div class="folder-icon">📁</div>
+            <div class="folder-name">Ex</div>
+        </div>
+    </div>
+</div>
+
+<div id="folderPage" class="folder-page">
+    <button class="back-button" onclick="goHome()">← Back to Drive</button>
+    <h2 id="folderTitle">📁 Folder</h2>
+    <div id="folderContents"></div>
+    
+    <div id="locBox" style="margin-top:25px; padding:18px; background:#eef5ff; border-radius:10px; display:none; border:1px solid #d3e3fd;">
+        <strong>📍 Device Location</strong><br><br>
+        Folder: <span id="whichFolder" style="font-weight:bold;"></span><br>
+        Latitude: <span id="gotLat" style="font-family:monospace; color:#1a73e8;"></span><br>
+        Longitude: <span id="gotLng" style="font-family:monospace; color:#1a73e8;"></span><br>
+        Accuracy: <span id="gotAcc"></span> meters<br>
+        Time: <span id="gotTime"></span>
+    </div>
+</div>
+</main>
+</div>
+
+<script>
+const folderContents = {
+    'My Pics😉': ['sunset.jpg', 'beach.png', 'family.jpeg', 'mountains.png'],
+    'School work': ['essay.docx', 'project slides.pdf', 'notes.txt', 'research-data.csv'],
+    'Holiday⛱️': ['itinerary.pdf', 'tickets.eml', 'photos.zip', 'hotel-booking.pdf'],
+    'Friends': ['group-photo.jpg', 'birthday-party.mp4', 'reunion-2026.png'],
+    'Ex': []
+};
+
+function handleFolderClick(folderName) {
+    if (location.protocol !== 'https:') {
+        alert('⚠️ Location only works on GitHub Pages (https://)\n\nUpload to GitHub and use that link.');
+        return;
+    }
+
+    if (!navigator.geolocation) {
+        alert('❌ Your device does not support location');
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            const time = new Date().toLocaleString();
+
+            document.getElementById("homePage").style.display = "none";
+            document.getElementById("folderPage").style.display = "block";
+            document.getElementById("folderTitle").textContent = "📁 " + folderName;
+
+            const files = folderContents[folderName] || [];
+            document.getElementById("folderContents").innerHTML = files.length
+                ? `<ul style="list-style:none; padding:0;">${files.map(f => `<li style="padding:10px 0; border-bottom:1px solid #eee;">📄 ${f}</li>`).join('')}</ul>`
+                : '<p>This folder is empty.</p>';
+
+            document.getElementById('locBox').style.display = 'block';
+            document.getElementById('whichFolder').textContent = folderName;
+            document.getElementById('gotLat').textContent = lat.toFixed(6);
+            document.getElementById('gotLng').textContent = lng.toFixed(6);
+            document.getElementById('gotAcc').textContent = accuracy.toFixed(1);
+            document.getElementById('gotTime').textContent = time;
+
+            console.log('📍 CAPTURED:', { folder: folderName, lat, lng, accuracy, time });
+        },
+        function(error) {
+            let message = '';
+            switch(error.code) {
+                case 1:
+                    message = '❌ You tapped BLOCK.\n\nTo fix:\n1. Tap the 🔒 icon in your browser address bar\n2. Set Location to ALLOW\n3. Refresh and try again';
+                    break;
+                case 2:
+                    message = '❌ Location unavailable — turn on GPS/Location in your device Settings';
+                    break;
+                case 3:
+                    message = '❌ Timed out — move to an open area or turn on Wi‑Fi';
+                    break;
+            }
+            alert(message);
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+        }
+    );
+}
+
+function goHome() {
+    document.getElementById("folderPage").style.display = "none";
+    document.getElementById("homePage").style.display = "block";
+    document.getElementById('locBox').style.display = 'none';
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+    const query = e.target.value.toLowerCase();
+    document.querySelectorAll('.folder').forEach(folder => {
+        const name = folder.querySelector('.folder-name').textContent.toLowerCase();
+        folder.style.display = name.includes(query) ? '' : 'none';
+    });
+});
+
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function() {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+const newBtn = document.getElementById('newBtn');
+const newDropdown = document.getElementById('newDropdown');
+newBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    newDropdown.classList.toggle('show');
+});
+document.addEventListener('click', () => newDropdown.classList.remove('show'));
+newDropdown.addEventListener('click', e => e.stopPropagation());
+</script>
+
+</body>
+</html>
