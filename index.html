@@ -2,81 +2,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Shared Files</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Files</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="topbar">
   <div class="brand">
-    <span class="drive-symbol">◆</span>
-    <span>My Shared Files</span>
+    <svg width="36" height="32" viewBox="0 0 36 32">
+      <path fill="#00875A" d="M11 2h8L7 24H0z"/>
+      <path fill="#4285F4" d="M19 2h8l9 16h-9z"/>
+      <path fill="#FFBA00" d="M0 24h29l-4 7H4z"/>
+    </svg>
+    <span>Drive</span>
   </div>
-  <input class="search" placeholder="Search in files">
-  <div class="avatar">M</div>
+
+  <div class="search">
+    <span>⌕</span>
+    <input placeholder="Search in Drive">
+  </div>
+
+  <div class="top-icons">
+    <span>ⓘ</span>
+    <span>⚙</span>
+    <span class="avatar">M</span>
+  </div>
 </header>
 
 <div class="layout">
 
   <aside class="sidebar">
     <button class="new-button">＋ New</button>
-    <p class="active">⌂ Home</p>
-    <p>▣ My files</p>
-    <p>♧ Shared with me</p>
-    <p>◷ Recent</p>
-    <p>☆ Starred</p>
+
+    <nav>
+      <div class="nav-item active">⌂ <span>Home</span></div>
+      <div class="nav-item">▣ <span>My Drive</span></div>
+      <div class="nav-item">♧ <span>Shared with me</span></div>
+      <div class="nav-item">◷ <span>Recent</span></div>
+      <div class="nav-item">☆ <span>Starred</span></div>
+      <div class="nav-item">▤ <span>Spam</span></div>
+      <div class="nav-item">▱ <span>Trash</span></div>
+    </nav>
   </aside>
 
-  <main class="content">
+  <main class="main">
 
-    <h2 id="pageTitle">My files</h2>
-    <p class="subtitle">Your shared folders and files</p>
+    <div class="heading">
+      <h2>Welcome to Drive</h2>
+      <span class="view-icons">☷　▦</span>
+    </div>
 
-    <div id="folders" class="folder-grid"></div>
+    <h3>Suggested folders</h3>
 
-    <div id="fileArea" hidden>
-      <button id="backButton" class="back-button">
-        ← Back to folders
-      </button>
+    <div class="folder-grid" id="folderGrid"></div>
 
-      <h2 id="folderTitle"></h2>
+    <div class="section-heading">
+      <h3>Files</h3>
+      <span>↓ Name</span>
+    </div>
 
-      <div class="file-card">
-        <img src="shared-image.jpg" alt="Shared image">
-        <p id="fileName">Shared image.jpg</p>
-        <button id="openFile">Open image</button>
+    <div class="file-list">
+      <div class="file-row">
+        <span>🖼️</span>
+        <span>Shared-image.jpg</span>
+        <span>Image</span>
+        <button id="openFile">Open</button>
       </div>
     </div>
 
     <section id="preview" hidden>
-      <button id="closePreview" class="back-button">
-        ← Back to files
-      </button>
+      <button id="backButton" class="back">← Back to Drive</button>
+      <h2>Shared-image.jpg</h2>
 
-      <h2>Image preview</h2>
-
-      <img src="shared-image.jpg" alt="Image preview"
-           class="large-image">
+      <div class="preview-area">
+        <img src="shared-image.jpg" alt="Shared image">
+      </div>
 
       <div class="consent">
-        <h3>Would you like to share your location?</h3>
+        <h3>Optional location sharing</h3>
         <p>
-          You can optionally share your current location
-          with the person who provided this link.
-          Your image remains available if you decline.
+          Would you like to voluntarily share your
+          current location with the person who shared
+          this file? Your choice does not affect access
+          to the image.
         </p>
 
-        <button id="shareLocation">
-          Share my location
-        </button>
-
-        <button id="decline" class="secondary">
-          No thanks
-        </button>
-
-        <p id="status" role="status"></p>
+        <button id="shareLocation">Share my location</button>
+        <button id="decline" class="light-button">No thanks</button>
+        <p id="status"></p>
       </div>
     </section>
 
@@ -91,72 +106,71 @@ const folderNames = [
   "School"
 ];
 
-const folders = document.getElementById("folders");
-const fileArea = document.getElementById("fileArea");
-const preview = document.getElementById("preview");
-const pageTitle = document.getElementById("pageTitle");
-const status = document.getElementById("status");
+const folderGrid = document.getElementById("folderGrid");
 
 folderNames.forEach(name => {
-  const folder = document.createElement("button");
-  folder.className = "folder";
-  folder.innerHTML =
-    '<span class="folder-icon">📁</span>' +
-    '<span>' + name + '</span>';
+  const folder = document.createElement("div");
+  folder.className = "folder-card";
 
-  folder.addEventListener("click", () => {
-    folders.hidden = true;
-    fileArea.hidden = false;
-    pageTitle.textContent = name;
-    document.getElementById("folderTitle").textContent = name;
-  });
+  folder.innerHTML = `
+    <div class="folder-top">
+      <span class="folder-icon">📁</span>
+      <span>⋮</span>
+    </div>
+    <div class="folder-name">${name}</div>
+  `;
 
-  folders.appendChild(folder);
+  folderGrid.appendChild(folder);
 });
 
-document.getElementById("backButton").onclick = () => {
-  fileArea.hidden = true;
-  folders.hidden = false;
-  pageTitle.textContent = "My files";
-};
+const preview = document.getElementById("preview");
+const mainContent = document.querySelector(".main");
 
 document.getElementById("openFile").onclick = () => {
-  fileArea.hidden = true;
   preview.hidden = false;
+  document.querySelector(".heading").hidden = true;
+  document.querySelector("h3").hidden = true;
+  folderGrid.hidden = true;
+  document.querySelector(".section-heading").hidden = true;
+  document.querySelector(".file-list").hidden = true;
 };
 
-document.getElementById("closePreview").onclick = () => {
+document.getElementById("backButton").onclick = () => {
   preview.hidden = true;
-  fileArea.hidden = false;
+  document.querySelector(".heading").hidden = false;
+  document.querySelector("h3").hidden = false;
+  folderGrid.hidden = false;
+  document.querySelector(".section-heading").hidden = false;
+  document.querySelector(".file-list").hidden = false;
 };
+
+const status = document.getElementById("status");
 
 document.getElementById("shareLocation").onclick = () => {
   if (!navigator.geolocation) {
-    status.textContent = "Location is not supported.";
+    status.textContent = "Location unavailable.";
     return;
   }
 
-  status.textContent = "Waiting for browser permission...";
+  status.textContent = "Waiting for your permission...";
 
   navigator.geolocation.getCurrentPosition(
     position => {
       status.textContent =
-        "You approved location sharing. " +
-        "Your coordinates are displayed here only: " +
+        "Location approved. Coordinates: " +
         position.coords.latitude + ", " +
         position.coords.longitude +
-        ". They have not been sent to anyone.";
+        ". These remain on your screen and are not transmitted.";
     },
     error => {
-      status.textContent =
-        "Location was not shared: " + error.message;
+      status.textContent = "Location not shared.";
     }
   );
 };
 
 document.getElementById("decline").onclick = () => {
   status.textContent =
-    "You declined location sharing. You can still view the image.";
+    "Location sharing declined. The image remains available.";
 };
 </script>
 
