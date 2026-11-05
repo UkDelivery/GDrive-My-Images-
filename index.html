@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- TOP BAR -->
 <header class="topbar">
     <div class="logo">
         <span class="logo-icon">📁</span>
@@ -22,7 +21,6 @@
 </header>
 
 <div class="layout">
-<!-- SIDEBAR -->
 <aside class="sidebar">
     <div class="new-button-container">
         <button class="new-button" id="newBtn">＋ New</button>
@@ -41,7 +39,6 @@
     <div class="nav-item" data-nav="trash">🗑️ Trash</div>
 </aside>
 
-<!-- MAIN CONTENT -->
 <main class="main">
 <div id="homePage">
     <div class="heading">
@@ -107,7 +104,6 @@ function goHome() {
     document.getElementById("homePage").style.display = "block";
 }
 
-// Search filter
 document.getElementById('searchInput').addEventListener('input', e => {
     const query = e.target.value.toLowerCase();
     document.querySelectorAll('.folder').forEach(folder => {
@@ -116,7 +112,6 @@ document.getElementById('searchInput').addEventListener('input', e => {
     });
 });
 
-// Navigation active state
 document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', function() {
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
@@ -124,7 +119,6 @@ document.querySelectorAll('.nav-item').forEach(item => {
     });
 });
 
-// New button dropdown
 const newBtn = document.getElementById('newBtn');
 const newDropdown = document.getElementById('newDropdown');
 newBtn.addEventListener('click', e => {
