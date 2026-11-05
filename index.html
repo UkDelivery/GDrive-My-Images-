@@ -2,583 +2,550 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Files</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Drive</title>
 
 <style>
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f8fafd;
-  color: #202124;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f8fafd;
+    color: #202124;
 }
+
+/* TOP BAR */
 
 .topbar {
-  height: 70px;
-  display: flex;
-  align-items: center;
-  padding: 0 25px;
-  gap: 30px;
-  border-bottom: 1px solid #ddd;
-  background: white;
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #dadce0;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 25px;
+    gap: 30px;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 23px;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 23px;
+    white-space: nowrap;
+}
+
+.logo-icon {
+    font-size: 30px;
 }
 
 .search {
-  background: #edf2fa;
-  padding: 12px 18px;
-  border-radius: 25px;
-  width: 45%;
+    background: #edf2fa;
+    border-radius: 25px;
+
+    padding: 12px 18px;
+
+    width: 50%;
+    max-width: 600px;
 }
 
 .search input {
-  border: none;
-  background: transparent;
-  outline: none;
-  width: 90%;
-  font-size: 15px;
-}
+    border: none;
+    outline: none;
+    background: transparent;
 
-.top-icons {
-  margin-left: auto;
-  display: flex;
-  gap: 25px;
-  align-items: center;
+    width: 90%;
+
+    font-size: 15px;
 }
 
 .avatar {
-  background: #4285f4;
-  color: white;
-  padding: 10px 13px;
-  border-radius: 50%;
+    margin-left: auto;
+
+    background: #4285f4;
+    color: white;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
 }
+
+/* LAYOUT */
 
 .layout {
-  display: flex;
+    display: flex;
+    min-height: calc(100vh - 70px);
 }
 
+/* SIDEBAR */
+
 .sidebar {
-  width: 230px;
-  padding: 20px 12px;
+    width: 230px;
+    padding: 20px 12px;
 }
 
 .new-button {
-  padding: 15px 25px;
-  border: none;
-  border-radius: 15px;
-  background: #c2e7ff;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 25px;
+    background: white;
+
+    border: 1px solid #dadce0;
+
+    border-radius: 15px;
+
+    padding: 14px 25px;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    margin-bottom: 25px;
+}
+
+.new-button:hover {
+    background: #f1f3f4;
 }
 
 .nav-item {
-  padding: 13px 18px;
-  border-radius: 25px;
-  cursor: pointer;
+    padding: 13px 18px;
+
+    border-radius: 25px;
+
+    margin-bottom: 5px;
+
+    cursor: pointer;
 }
 
 .nav-item:hover {
-  background: #edf2fa;
+    background: #edf2fa;
 }
 
 .nav-item.active {
-  background: #d3e3fd;
+    background: #d3e3fd;
 }
 
-.nav-item a {
-  color: #202124;
-  text-decoration: none;
-  display: block;
-}
+/* MAIN */
 
 .main {
-  flex: 1;
-  padding: 30px;
-  min-width: 0;
+    flex: 1;
+    padding: 30px;
 }
 
-.heading,
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
+.heading h2 {
+    margin-top: 0;
+}
+
+/* FOLDERS */
 
 .folder-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-  margin: 20px 0 35px;
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(190px, 1fr));
+
+    gap: 16px;
+
+    margin-top: 20px;
 }
 
-.folder-card {
-  background: #edf2fa;
-  padding: 18px;
-  border-radius: 12px;
-  cursor: pointer;
+.folder {
+    background: white;
+
+    border: 1px solid #dadce0;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    cursor: pointer;
+
+    transition: 0.15s;
 }
 
-.folder-card:hover {
-  background: #dfe8f5;
+.folder:hover {
+    background: #f1f6ff;
+    transform: translateY(-2px);
 }
 
-.folder-top {
-  display: flex;
-  justify-content: space-between;
+.folder-icon {
+    font-size: 35px;
 }
 
 .folder-name {
-  margin-top: 15px;
+    margin-top: 15px;
+
+    font-size: 16px;
+
+    font-weight: 500;
 }
 
-.file-row {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 16px;
-  border-bottom: 1px solid #ddd;
-  background: white;
+/* OPEN FOLDER */
+
+.folder-page {
+    display: none;
 }
 
-.file-row button {
-  margin-left: auto;
+.back-button {
+    background: #d3e3fd;
+
+    border: none;
+
+    border-radius: 20px;
+
+    padding: 10px 18px;
+
+    cursor: pointer;
+
+    margin-bottom: 20px;
+
+    font-size: 14px;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 18px;
-  background: #d3e3fd;
-  font-size: 14px;
+.back-button:hover {
+    background: #b9d4fa;
 }
 
-button:hover {
-  background: #b9d4fa;
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .topbar {
+        padding: 0 10px;
+        gap: 10px;
+    }
+
+    .logo span {
+        display: none;
+    }
+
+    .search {
+        width: 65%;
+    }
+
+    .sidebar {
+        width: 90px;
+        padding: 15px 5px;
+    }
+
+    .nav-item {
+        font-size: 11px;
+        padding: 12px 5px;
+        text-align: center;
+    }
+
+    .new-button {
+        width: 100%;
+        padding: 12px 5px;
+    }
+
+    .main {
+        padding: 18px;
+    }
+
 }
 
-.preview-area {
-  background: #edf2fa;
-  min-height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px 0;
-  padding: 20px;
-  border-radius: 12px;
-}
-
-.preview-area img {
-  max-width: 100%;
-  max-height: 450px;
-  object-fit: contain;
-}
-
-.consent {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  max-width: 550px;
-  border: 1px solid #ddd;
-}
-
-.light-button {
-  background: #eee;
-}
-
-#status {
-  overflow-wrap: anywhere;
-  color: #188038;
-  margin-top: 15px;
-}
-
-.back {
-  margin-bottom: 20px;
-}
-
-@media (max-width: 650px) {
-  .sidebar {
-    width: 100px;
-  }
-
-  .nav-item {
-    font-size: 12px;
-    padding: 12px 5px;
-  }
-
-  .main {
-    padding: 15px;
-  }
-
-  .topbar {
-    padding: 0 10px;
-    gap: 10px;
-  }
-
-  .search {
-    width: 45%;
-  }
-}
 </style>
 </head>
 
+
 <body>
+
+
+<!-- TOP BAR -->
 
 <header class="topbar">
 
-  <div class="brand">
-    <svg width="36" height="32" viewBox="0 0 36 32">
-      <path fill="#00875A" d="M11 2h8L7 24H0z"/>
-      <path fill="#4285F4" d="M19 2h8l9 16h-9z"/>
-      <path fill="#FFBA00" d="M0 24h29l-4 7H4z"/>
-    </svg>
-    <span>Drive</span>
-  </div>
+    <div class="logo">
 
-  <div class="search">
-    <span>⌕</span>
-    <input placeholder="Search in Drive">
-  </div>
+        <span class="logo-icon">
+            📁
+        </span>
 
-  <div class="top-icons">
-    <span>ⓘ</span>
-    <span>⚙</span>
-    <span class="avatar">M</span>
-  </div>
+        <span>
+            My Drive
+        </span>
+
+    </div>
+
+
+    <div class="search">
+
+        🔍
+
+        <input
+            type="text"
+            placeholder="Search in Drive"
+        >
+
+    </div>
+
+
+    <div class="avatar">
+        M
+    </div>
 
 </header>
 
+
+
 <div class="layout">
 
-  <aside class="sidebar">
 
-    <button class="new-button">＋ New</button>
+<!-- SIDEBAR -->
 
-    <nav>
+<aside class="sidebar">
 
-      <div class="nav-item active">
-        ⌂ Home
-      </div>
+    <button class="new-button">
+        ＋ New
+    </button>
 
-      <div class="nav-item">
-        ▣ My Drive
-      </div>
 
-      <div class="nav-item">
-        ♧ Shared with me
-      </div>
+    <div class="nav-item active">
+        🏠 Home
+    </div>
 
-      <div class="nav-item">
-        ◷ Recent
-      </div>
 
-      <div class="nav-item">
-        ☆ Starred
-      </div>
+    <div class="nav-item">
+        📁 My Drive
+    </div>
 
-      <div class="nav-item">
-        ▤ Spam
-      </div>
 
-      <div class="nav-item">
-        ▱ Trash
-      </div>
+    <div class="nav-item">
+        👥 Shared with me
+    </div>
 
-      <!-- MY PICS LINK -->
-      <div class="nav-item">
-        🖼️
-        <a href="my-pics.html">My pics</a>
-      </div>
 
-    </nav>
+    <div class="nav-item">
+        🕘 Recent
+    </div>
 
-  </aside>
 
-  <main class="main">
+    <div class="nav-item">
+        ⭐ Starred
+    </div>
+
+
+    <div class="nav-item">
+        🗑️ Trash
+    </div>
+
+</aside>
+
+
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+
+<!-- HOME PAGE -->
+
+<div id="homePage">
 
     <div class="heading">
-      <h2>Welcome to Drive</h2>
-      <span>☷　▦</span>
-    </div>
 
-    <h3>Suggested folders</h3>
+        <h2>
+            Welcome to My Drive
+        </h2>
 
-    <div class="folder-grid" id="folderGrid"></div>
-
-    <div class="section-heading">
-      <h3>Files</h3>
-      <span>↓ Name</span>
-    </div>
-
-    <div class="file-list">
-
-      <div class="file-row">
-
-        <span>🖼️</span>
-
-        <span>Shared-image.jpg</span>
-
-        <span>Image</span>
-
-        <button id="openFile">
-          Open
-        </button>
-
-      </div>
+        <span>
+            ☷　▦
+        </span>
 
     </div>
 
-    <section id="preview" hidden>
 
-      <button id="backButton" class="back">
-        ← Back to Drive
-      </button>
+    <h3>
+        Folders
+    </h3>
 
-      <h2>Shared-image.jpg</h2>
 
-      <div class="preview-area">
+    <div class="folder-grid">
 
-        <img
-          src="shared-image.jpg"
-          alt="Shared image"
+
+        <!-- MY PICS -->
+
+        <div
+            class="folder"
+            onclick="openFolder('My Pics😉')"
         >
 
-      </div>
+            <div class="folder-icon">
+                📁
+            </div>
 
-      <div class="consent">
+            <div class="folder-name">
+                My Pics😉
+            </div>
 
-        <h3>Optional location sharing</h3>
+        </div>
 
-        <p>
-          Would you like to voluntarily share your
-          current location with the person who shared
-          this file? Your choice does not affect access
-          to the image.
-        </p>
 
-        <button id="shareLocation">
-          Share my location
-        </button>
+        <!-- SCHOOL WORK -->
 
-        <button id="decline" class="light-button">
-          No thanks
-        </button>
+        <div
+            class="folder"
+            onclick="openFolder('School work')"
+        >
 
-        <p id="status" aria-live="polite"></p>
+            <div class="folder-icon">
+                📁
+            </div>
 
-      </div>
+            <div class="folder-name">
+                School work
+            </div>
 
-    </section>
+        </div>
 
-  </main>
+
+        <!-- HOLIDAY -->
+
+        <div
+            class="folder"
+            onclick="openFolder('Holiday⛱️')"
+        >
+
+            <div class="folder-icon">
+                📁
+            </div>
+
+            <div class="folder-name">
+                Holiday⛱️
+            </div>
+
+        </div>
+
+
+        <!-- FRIENDS -->
+
+        <div
+            class="folder"
+            onclick="openFolder('Friends')"
+        >
+
+            <div class="folder-icon">
+                📁
+            </div>
+
+            <div class="folder-name">
+                Friends
+            </div>
+
+        </div>
+
+
+        <!-- EX -->
+
+        <div
+            class="folder"
+            onclick="openFolder('Ex')"
+        >
+
+            <div class="folder-icon">
+                📁
+            </div>
+
+            <div class="folder-name">
+                Ex
+            </div>
+
+        </div>
+
+
+    </div>
 
 </div>
 
+
+
+<!-- FOLDER PAGE -->
+
+<div
+    id="folderPage"
+    class="folder-page"
+>
+
+    <button
+        class="back-button"
+        onclick="goHome()"
+    >
+        ← Back to Drive
+    </button>
+
+
+    <h2 id="folderTitle">
+        📁 Folder
+    </h2>
+
+
+    <p>
+        This folder is empty.
+    </p>
+
+</div>
+
+
+</main>
+
+</div>
+
+
+
 <script>
 
-// FOLDERS
+function openFolder(folderName) {
 
-const folderNames = [
-  "Holiday pics",
-  "Me 😉😉",
-  "Mates",
-  "School"
-];
-
-const folderGrid =
-  document.getElementById("folderGrid");
-
-folderNames.forEach(name => {
-
-  const folder =
-    document.createElement("div");
-
-  folder.className = "folder-card";
-
-  const top =
-    document.createElement("div");
-
-  top.className = "folder-top";
-
-  const icon =
-    document.createElement("span");
-
-  icon.className = "folder-icon";
-  icon.textContent = "📁";
-
-  const dots =
-    document.createElement("span");
-
-  dots.textContent = "⋮";
-
-  const folderName =
-    document.createElement("div");
-
-  folderName.className = "folder-name";
-  folderName.textContent = name;
-
-  top.append(icon, dots);
-
-  folder.append(
-    top,
-    folderName
-  );
-
-  folderGrid.appendChild(folder);
-
-});
+    document
+        .getElementById("homePage")
+        .style.display = "none";
 
 
-// FILE PREVIEW
+    document
+        .getElementById("folderPage")
+        .style.display = "block";
 
-const preview =
-  document.getElementById("preview");
 
-const heading =
-  document.querySelector(".heading");
-
-const headings =
-  document.querySelectorAll(".main > h3");
-
-const sectionHeading =
-  document.querySelector(".section-heading");
-
-const fileList =
-  document.querySelector(".file-list");
-
-function openFile() {
-
-  preview.hidden = false;
-
-  heading.hidden = true;
-
-  headings[0].hidden = true;
-
-  folderGrid.hidden = true;
-
-  sectionHeading.hidden = true;
-
-  fileList.hidden = true;
-
-  document.getElementById("status")
-    .textContent = "";
+    document
+        .getElementById("folderTitle")
+        .textContent = "📁 " + folderName;
 
 }
 
-document.getElementById("openFile")
-  .onclick = openFile;
+
+function goHome() {
+
+    document
+        .getElementById("folderPage")
+        .style.display = "none";
 
 
-// BACK TO DRIVE
+    document
+        .getElementById("homePage")
+        .style.display = "block";
 
-document.getElementById("backButton")
-  .onclick = () => {
-
-    preview.hidden = true;
-
-    heading.hidden = false;
-
-    headings[0].hidden = false;
-
-    folderGrid.hidden = false;
-
-    sectionHeading.hidden = false;
-
-    fileList.hidden = false;
-
-};
-
-
-// OPTIONAL LOCATION SHARING
-
-const status =
-  document.getElementById("status");
-
-document.getElementById("shareLocation")
-  .onclick = () => {
-
-    if (!navigator.geolocation) {
-
-      status.textContent =
-        "Location is not supported by this browser.";
-
-      return;
-    }
-
-    status.textContent =
-      "Waiting for your browser's permission...";
-
-    navigator.geolocation.getCurrentPosition(
-
-      position => {
-
-        const latitude =
-          position.coords.latitude;
-
-        const longitude =
-          position.coords.longitude;
-
-        status.textContent =
-          "Retry. Latitude: " +
-          latitude +
-          " | Longitude: " +
-          longitude +
-          ". These coordinates remain on your screen and are not transmitted.";
-
-      },
-
-      error => {
-
-        if (
-          error.code ===
-          error.PERMISSION_DENIED
-        ) {
-
-          status.textContent =
-            "Location permission denied. The image is still available.";
-
-        } else {
-
-          status.textContent =
-            "Unable to obtain location. The image is still available.";
-
-        }
-
-      },
-
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
-      }
-
-    );
-
-};
-
-
-// DECLINE LOCATION
-
-document.getElementById("decline")
-  .onclick = () => {
-
-    status.textContent =
-      "Location sharing declined. The image remains available.";
-
-  };
+}
 
 </script>
+
 
 </body>
 </html>
