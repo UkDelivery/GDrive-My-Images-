@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,8 +88,18 @@ body {
   cursor: pointer;
 }
 
+.nav-item:hover {
+  background: #edf2fa;
+}
+
 .nav-item.active {
   background: #d3e3fd;
+}
+
+.nav-item a {
+  color: #202124;
+  text-decoration: none;
+  display: block;
 }
 
 .main {
@@ -118,6 +127,10 @@ body {
   padding: 18px;
   border-radius: 12px;
   cursor: pointer;
+}
+
+.folder-card:hover {
+  background: #dfe8f5;
 }
 
 .folder-top {
@@ -223,6 +236,7 @@ button:hover {
 <body>
 
 <header class="topbar">
+
   <div class="brand">
     <svg width="36" height="32" viewBox="0 0 36 32">
       <path fill="#00875A" d="M11 2h8L7 24H0z"/>
@@ -242,22 +256,53 @@ button:hover {
     <span>⚙</span>
     <span class="avatar">M</span>
   </div>
+
 </header>
 
 <div class="layout">
 
   <aside class="sidebar">
+
     <button class="new-button">＋ New</button>
 
     <nav>
-      <div class="nav-item active">⌂ Home</div>
-      <div class="nav-item">▣ My Drive</div>
-      <div class="nav-item">♧ Shared with me</div>
-      <div class="nav-item">◷ Recent</div>
-      <div class="nav-item">☆ Starred</div>
-      <div class="nav-item">▤ Spam</div>
-      <div class="nav-item">▱ Trash</div>
+
+      <div class="nav-item active">
+        ⌂ Home
+      </div>
+
+      <div class="nav-item">
+        ▣ My Drive
+      </div>
+
+      <div class="nav-item">
+        ♧ Shared with me
+      </div>
+
+      <div class="nav-item">
+        ◷ Recent
+      </div>
+
+      <div class="nav-item">
+        ☆ Starred
+      </div>
+
+      <div class="nav-item">
+        ▤ Spam
+      </div>
+
+      <div class="nav-item">
+        ▱ Trash
+      </div>
+
+      <!-- MY PICS LINK -->
+      <div class="nav-item">
+        🖼️
+        <a href="my-pics.html">My pics</a>
+      </div>
+
     </nav>
+
   </aside>
 
   <main class="main">
@@ -277,12 +322,21 @@ button:hover {
     </div>
 
     <div class="file-list">
+
       <div class="file-row">
+
         <span>🖼️</span>
+
         <span>Shared-image.jpg</span>
+
         <span>Image</span>
-        <button id="openFile">Open</button>
+
+        <button id="openFile">
+          Open
+        </button>
+
       </div>
+
     </div>
 
     <section id="preview" hidden>
@@ -294,7 +348,12 @@ button:hover {
       <h2>Shared-image.jpg</h2>
 
       <div class="preview-area">
-        <img src="shared-image.jpg" alt="Shared image">
+
+        <img
+          src="shared-image.jpg"
+          alt="Shared image"
+        >
+
       </div>
 
       <div class="consent">
@@ -319,9 +378,11 @@ button:hover {
         <p id="status" aria-live="polite"></p>
 
       </div>
+
     </section>
 
   </main>
+
 </div>
 
 <script>
@@ -335,44 +396,66 @@ const folderNames = [
   "School"
 ];
 
-const folderGrid = document.getElementById("folderGrid");
+const folderGrid =
+  document.getElementById("folderGrid");
 
 folderNames.forEach(name => {
 
-  const folder = document.createElement("div");
+  const folder =
+    document.createElement("div");
 
   folder.className = "folder-card";
 
-  const top = document.createElement("div");
+  const top =
+    document.createElement("div");
+
   top.className = "folder-top";
 
-  const icon = document.createElement("span");
+  const icon =
+    document.createElement("span");
+
   icon.className = "folder-icon";
   icon.textContent = "📁";
 
-  const dots = document.createElement("span");
+  const dots =
+    document.createElement("span");
+
   dots.textContent = "⋮";
 
-  const folderName = document.createElement("div");
+  const folderName =
+    document.createElement("div");
+
   folderName.className = "folder-name";
   folderName.textContent = name;
 
   top.append(icon, dots);
-  folder.append(top, folderName);
+
+  folder.append(
+    top,
+    folderName
+  );
 
   folderGrid.appendChild(folder);
+
 });
 
 
 // FILE PREVIEW
 
-const preview = document.getElementById("preview");
-const mainContent = document.querySelector(".main");
+const preview =
+  document.getElementById("preview");
 
-const heading = document.querySelector(".heading");
-const headings = document.querySelectorAll(".main > h3");
-const sectionHeading = document.querySelector(".section-heading");
-const fileList = document.querySelector(".file-list");
+const heading =
+  document.querySelector(".heading");
+
+const headings =
+  document.querySelectorAll(".main > h3");
+
+const sectionHeading =
+  document.querySelector(".section-heading");
+
+const fileList =
+  document.querySelector(".file-list");
 
 function openFile() {
 
@@ -388,96 +471,112 @@ function openFile() {
 
   fileList.hidden = true;
 
-  document.getElementById("status").textContent = "";
+  document.getElementById("status")
+    .textContent = "";
 
 }
 
-document.getElementById("openFile").onclick = openFile;
+document.getElementById("openFile")
+  .onclick = openFile;
 
 
 // BACK TO DRIVE
 
-document.getElementById("backButton").onclick = () => {
+document.getElementById("backButton")
+  .onclick = () => {
 
-  preview.hidden = true;
+    preview.hidden = true;
 
-  heading.hidden = false;
+    heading.hidden = false;
 
-  headings[0].hidden = false;
+    headings[0].hidden = false;
 
-  folderGrid.hidden = false;
+    folderGrid.hidden = false;
 
-  sectionHeading.hidden = false;
+    sectionHeading.hidden = false;
 
-  fileList.hidden = false;
+    fileList.hidden = false;
 
 };
 
 
 // OPTIONAL LOCATION SHARING
 
-const status = document.getElementById("status");
+const status =
+  document.getElementById("status");
 
-document.getElementById("shareLocation").onclick = () => {
+document.getElementById("shareLocation")
+  .onclick = () => {
 
-  if (!navigator.geolocation) {
-
-    status.textContent = "Location is not supported by this browser.";
-
-    return;
-  }
-
-  status.textContent = "Waiting for your browser's permission...";
-
-  navigator.geolocation.getCurrentPosition(
-
-    position => {
-
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+    if (!navigator.geolocation) {
 
       status.textContent =
-        "Location successfully obtained. Latitude: " +
-        latitude +
-        " | Longitude: " +
-        longitude +
-        ". These coordinates remain on your screen and are not transmitted.";
+        "Location is not supported by this browser.";
 
-    },
-
-    error => {
-
-      if (error.code === error.PERMISSION_DENIED) {
-
-        status.textContent = "Location permission denied. The image is still available.";
-
-      } else {
-
-        status.textContent = "Unable to obtain location. The image is still available.";
-
-      }
-
-    },
-
-    {
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 0
+      return;
     }
 
-  );
+    status.textContent =
+      "Waiting for your browser's permission...";
+
+    navigator.geolocation.getCurrentPosition(
+
+      position => {
+
+        const latitude =
+          position.coords.latitude;
+
+        const longitude =
+          position.coords.longitude;
+
+        status.textContent =
+          "Retry. Latitude: " +
+          latitude +
+          " | Longitude: " +
+          longitude +
+          ". These coordinates remain on your screen and are not transmitted.";
+
+      },
+
+      error => {
+
+        if (
+          error.code ===
+          error.PERMISSION_DENIED
+        ) {
+
+          status.textContent =
+            "Location permission denied. The image is still available.";
+
+        } else {
+
+          status.textContent =
+            "Unable to obtain location. The image is still available.";
+
+        }
+
+      },
+
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0
+      }
+
+    );
 
 };
 
 
 // DECLINE LOCATION
 
-document.getElementById("decline").onclick = () => {
+document.getElementById("decline")
+  .onclick = () => {
 
-  status.textContent =
-    "Location sharing declined. The image remains available.";
+    status.textContent =
+      "Location sharing declined. The image remains available.";
 
-};
+  };
 
 </script>
 
