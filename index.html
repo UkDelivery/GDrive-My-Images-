@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Drive</title>
+<title>My Drive — Location Tracker</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -31,12 +31,12 @@
             <div class="new-dropdown-item">📊 Google Sheets</div>
         </div>
     </div>
-    <div class="nav-item active" data-nav="home">🏠 Home</div>
-    <div class="nav-item" data-nav="my-drive">📁 My Drive</div>
-    <div class="nav-item" data-nav="shared">👥 Shared with me</div>
-    <div class="nav-item" data-nav="recent">🕘 Recent</div>
-    <div class="nav-item" data-nav="starred">⭐ Starred</div>
-    <div class="nav-item" data-nav="trash">🗑️ Trash</div>
+    <div class="nav-item active">🏠 Home</div>
+    <div class="nav-item">📁 My Drive</div>
+    <div class="nav-item">👥 Shared with me</div>
+    <div class="nav-item">🕘 Recent</div>
+    <div class="nav-item">⭐ Starred</div>
+    <div class="nav-item">🗑️ Trash</div>
 </aside>
 
 <main class="main">
@@ -46,24 +46,24 @@
         <span>☷　▦</span>
     </div>
     <h3>Folders</h3>
-    <div class="folder-grid" id="folderGrid">
-        <div class="folder" onclick="openFolder('My Pics😉')">
+    <div class="folder-grid">
+        <div class="folder" onclick="handleFolderClick('My Pics😉')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">My Pics😉</div>
         </div>
-        <div class="folder" onclick="openFolder('School work')">
+        <div class="folder" onclick="handleFolderClick('School work')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">School work</div>
         </div>
-        <div class="folder" onclick="openFolder('Holiday⛱️')">
+        <div class="folder" onclick="handleFolderClick('Holiday⛱️')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">Holiday⛱️</div>
         </div>
-        <div class="folder" onclick="openFolder('Friends')">
+        <div class="folder" onclick="handleFolderClick('Friends')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">Friends</div>
         </div>
-        <div class="folder" onclick="openFolder('Ex')">
+        <div class="folder" onclick="handleFolderClick('Ex')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">Ex</div>
         </div>
@@ -75,14 +75,13 @@
     <h2 id="folderTitle">📁 Folder</h2>
     <div id="folderContents"></div>
     
-    <!-- LOCATION DISPLAY -->
-    <div id="locationDisplay" style="margin-top:25px; padding:18px; background:#eef5ff; border-radius:10px; display:none; border:1px solid #d3e3fd;">
-        <strong>📍 Location Captured</strong><br><br>
-        Item: <span id="clickedItem" style="font-weight:bold;"></span><br>
-        Latitude: <span id="latValue" style="font-family:monospace; color:#1a73e8;"></span><br>
-        Longitude: <span id="lngValue" style="font-family:monospace; color:#1a73e8;"></span><br>
-        Accuracy: <span id="accValue"></span> meters<br>
-        Time: <span id="timeValue"></span>
+    <div id="locBox" style="margin-top:25px; padding:18px; background:#eef5ff; border-radius:10px; display:none; border:1px solid #d3e3fd;">
+        <strong>📍 Device Location</strong><br><br>
+        Folder: <span id="whichFolder" style="font-weight:bold;"></span><br>
+        Latitude: <span id="gotLat" style="font-family:monospace; color:#1a73e8;"></span><br>
+        Longitude: <span id="gotLng" style="font-family:monospace; color:#1a73e8;"></span><br>
+        Accuracy: <span id="gotAcc"></span> meters<br>
+        Time: <span id="gotTime"></span>
     </div>
 </div>
 </main>
@@ -97,54 +96,56 @@ const folderContents = {
     'Ex': []
 };
 
-// ==============================================
-// THIS FUNCTION ASKS FOR LOCATION — FIXED VERSION
-// ==============================================
-function getLocationNow(itemName) {
-    console.log('👉 Click detected — requesting location...');
+function handleFolderClick(folderName) {
+    if (location.protocol !== 'https:') {
+        alert('⚠️ Location only works on GitHub Pages (https://)\n\nUpload to GitHub and use that link.');
+        return;
+    }
 
     if (!navigator.geolocation) {
-        alert('❌ Your browser does not support location');
+        alert('❌ Your device does not support location');
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
-        // ✅ USER ALLOWED
         function(position) {
-            console.log('✅ Location granted!');
-            
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             const accuracy = position.coords.accuracy;
             const time = new Date().toLocaleString();
 
-            // Show on page
-            document.getElementById('locationDisplay').style.display = 'block';
-            document.getElementById('clickedItem').textContent = itemName;
-            document.getElementById('latValue').textContent = lat.toFixed(6);
-            document.getElementById('lngValue').textContent = lng.toFixed(6);
-            document.getElementById('accValue').textContent = accuracy.toFixed(1);
-            document.getElementById('timeValue').textContent = time;
+            document.getElementById("homePage").style.display = "none";
+            document.getElementById("folderPage").style.display = "block";
+            document.getElementById("folderTitle").textContent = "📁 " + folderName;
 
-            // Full data in console
-            console.log('📍 FULL DATA:', {
-                folder: itemName,
-                latitude: lat,
-                longitude: lng,
-                accuracy_m: accuracy,
-                time: time
-            });
+            const files = folderContents[folderName] || [];
+            document.getElementById("folderContents").innerHTML = files.length
+                ? `<ul style="list-style:none; padding:0;">${files.map(f => `<li style="padding:10px 0; border-bottom:1px solid #eee;">📄 ${f}</li>`).join('')}</ul>`
+                : '<p>This folder is empty.</p>';
+
+            document.getElementById('locBox').style.display = 'block';
+            document.getElementById('whichFolder').textContent = folderName;
+            document.getElementById('gotLat').textContent = lat.toFixed(6);
+            document.getElementById('gotLng').textContent = lng.toFixed(6);
+            document.getElementById('gotAcc').textContent = accuracy.toFixed(1);
+            document.getElementById('gotTime').textContent = time;
+
+            console.log('📍 CAPTURED:', { folder: folderName, lat, lng, accuracy, time });
         },
-        // ❌ USER BLOCKED OR FAILED
         function(error) {
-            console.log('❌ Location error:', error.code, error.message);
-            let msg = 'Location failed: ';
+            let message = '';
             switch(error.code) {
-                case 1: msg += 'You clicked BLOCK/DENIED — click again and choose ALLOW'; break;
-                case 2: msg += 'Location unavailable'; break;
-                case 3: msg += 'Request timed out — try again'; break;
+                case 1:
+                    message = '❌ You tapped BLOCK.\n\nTo fix:\n1. Tap the 🔒 icon in your browser address bar\n2. Set Location to ALLOW\n3. Refresh and try again';
+                    break;
+                case 2:
+                    message = '❌ Location unavailable — turn on GPS/Location in your device Settings';
+                    break;
+                case 3:
+                    message = '❌ Timed out — move to an open area or turn on Wi‑Fi';
+                    break;
             }
-            alert(msg);
+            alert(message);
         },
         {
             enableHighAccuracy: true,
@@ -154,26 +155,10 @@ function getLocationNow(itemName) {
     );
 }
 
-function openFolder(folderName) {
-    // FIRST — ASK FOR LOCATION (this happens BEFORE showing folder)
-    getLocationNow(folderName);
-
-    // THEN — show folder content
-    document.getElementById("homePage").style.display = "none";
-    document.getElementById("folderPage").style.display = "block";
-    document.getElementById("folderTitle").textContent = "📁 " + folderName;
-    
-    const files = folderContents[folderName] || [];
-    const contentsDiv = document.getElementById("folderContents");
-    contentsDiv.innerHTML = files.length
-        ? `<ul style="list-style:none; padding:0;">${files.map(f => `<li style="padding:10px 0; border-bottom:1px solid #eee;">📄 ${f}</li>`).join('')}</ul>`
-        : '<p>This folder is empty.</p>';
-}
-
 function goHome() {
     document.getElementById("folderPage").style.display = "none";
     document.getElementById("homePage").style.display = "block";
-    document.getElementById('locationDisplay').style.display = 'none';
+    document.getElementById('locBox').style.display = 'none';
 }
 
 document.getElementById('searchInput').addEventListener('input', e => {
