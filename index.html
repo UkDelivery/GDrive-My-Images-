@@ -47,23 +47,23 @@
     </div>
     <h3>Folders</h3>
     <div class="folder-grid" id="folderGrid">
-        <div class="folder" data-folder="My Pics😉" onclick="openFolder('My Pics😉')">
+        <div class="folder" onclick="openFolder('My Pics😉')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">My Pics😉</div>
         </div>
-        <div class="folder" data-folder="School work" onclick="openFolder('School work')">
+        <div class="folder" onclick="openFolder('School work')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">School work</div>
         </div>
-        <div class="folder" data-folder="Holiday⛱️" onclick="openFolder('Holiday⛱️')">
+        <div class="folder" onclick="openFolder('Holiday⛱️')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">Holiday⛱️</div>
         </div>
-        <div class="folder" data-folder="Friends" onclick="openFolder('Friends')">
+        <div class="folder" onclick="openFolder('Friends')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">Friends</div>
         </div>
-        <div class="folder" data-folder="Ex" onclick="openFolder('Ex')">
+        <div class="folder" onclick="openFolder('Ex')">
             <div class="folder-icon">📁</div>
             <div class="folder-name">Ex</div>
         </div>
@@ -75,10 +75,10 @@
     <h2 id="folderTitle">📁 Folder</h2>
     <div id="folderContents"></div>
     
-    <!-- LOCATION DISPLAY BOX -->
+    <!-- LOCATION DISPLAY -->
     <div id="locationDisplay" style="margin-top:25px; padding:18px; background:#eef5ff; border-radius:10px; display:none; border:1px solid #d3e3fd;">
-        <strong>📍 Visitor Location Logged</strong><br><br>
-        Folder/File: <span id="clickedItem" style="font-weight:bold; color:#202124;"></span><br>
+        <strong>📍 Location Captured</strong><br><br>
+        Item: <span id="clickedItem" style="font-weight:bold;"></span><br>
         Latitude: <span id="latValue" style="font-family:monospace; color:#1a73e8;"></span><br>
         Longitude: <span id="lngValue" style="font-family:monospace; color:#1a73e8;"></span><br>
         Accuracy: <span id="accValue"></span> meters<br>
@@ -97,22 +97,28 @@ const folderContents = {
     'Ex': []
 };
 
-// ===== GET EXACT LATITUDE & LONGITUDE =====
-function getPreciseLocation(itemName) {
+// ==============================================
+// THIS FUNCTION ASKS FOR LOCATION — FIXED VERSION
+// ==============================================
+function getLocationNow(itemName) {
+    console.log('👉 Click detected — requesting location...');
+
     if (!navigator.geolocation) {
-        console.log('❌ Geolocation not supported');
-        alert('Location is not supported on this browser');
+        alert('❌ Your browser does not support location');
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
-        (position) => {
+        // ✅ USER ALLOWED
+        function(position) {
+            console.log('✅ Location granted!');
+            
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             const accuracy = position.coords.accuracy;
             const time = new Date().toLocaleString();
 
-            // DISPLAY ON PAGE
+            // Show on page
             document.getElementById('locationDisplay').style.display = 'block';
             document.getElementById('clickedItem').textContent = itemName;
             document.getElementById('latValue').textContent = lat.toFixed(6);
@@ -120,31 +126,39 @@ function getPreciseLocation(itemName) {
             document.getElementById('accValue').textContent = accuracy.toFixed(1);
             document.getElementById('timeValue').textContent = time;
 
-            // LOG TO CONSOLE — Press F12 → Console tab to view
-            console.log('📍 CLICK LOGGED:', {
-                item: itemName,
+            // Full data in console
+            console.log('📍 FULL DATA:', {
+                folder: itemName,
                 latitude: lat,
                 longitude: lng,
-                accuracy_meters: accuracy,
-                timestamp: time
+                accuracy_m: accuracy,
+                time: time
             });
         },
-        (error) => {
-            console.log('❌ Location error:', error.message);
-            alert('Location access denied — user clicked Block or unavailable');
+        // ❌ USER BLOCKED OR FAILED
+        function(error) {
+            console.log('❌ Location error:', error.code, error.message);
+            let msg = 'Location failed: ';
+            switch(error.code) {
+                case 1: msg += 'You clicked BLOCK/DENIED — click again and choose ALLOW'; break;
+                case 2: msg += 'Location unavailable'; break;
+                case 3: msg += 'Request timed out — try again'; break;
+            }
+            alert(msg);
         },
-        { 
-            enableHighAccuracy: true, 
-            timeout: 10000, 
-            maximumAge: 0 
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
         }
     );
 }
 
 function openFolder(folderName) {
-    // TRIGGER LOCATION REQUEST WHEN CLICKED
-    getPreciseLocation(folderName);
+    // FIRST — ASK FOR LOCATION (this happens BEFORE showing folder)
+    getLocationNow(folderName);
 
+    // THEN — show folder content
     document.getElementById("homePage").style.display = "none";
     document.getElementById("folderPage").style.display = "block";
     document.getElementById("folderTitle").textContent = "📁 " + folderName;
@@ -152,7 +166,7 @@ function openFolder(folderName) {
     const files = folderContents[folderName] || [];
     const contentsDiv = document.getElementById("folderContents");
     contentsDiv.innerHTML = files.length
-        ? `<ul>${files.map(f => `<li>📄 ${f}</li>`).join('')}</ul>`
+        ? `<ul style="list-style:none; padding:0;">${files.map(f => `<li style="padding:10px 0; border-bottom:1px solid #eee;">📄 ${f}</li>`).join('')}</ul>`
         : '<p>This folder is empty.</p>';
 }
 
@@ -165,7 +179,7 @@ function goHome() {
 document.getElementById('searchInput').addEventListener('input', e => {
     const query = e.target.value.toLowerCase();
     document.querySelectorAll('.folder').forEach(folder => {
-        const name = folder.dataset.folder.toLowerCase();
+        const name = folder.querySelector('.folder-name').textContent.toLowerCase();
         folder.style.display = name.includes(query) ? '' : 'none';
     });
 });
