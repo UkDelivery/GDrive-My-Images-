@@ -1,11 +1,164 @@
-My Drive
-├── Holiday pics
-│   ├── beach.jpg
-│   └── holiday.jpg
-├── Me 😉😉
-│   ├── image1.jpg
-│   └── image2.jpg
-├── Mates
-│   └── group-photo.jpg
-└── School
-    └── school-photo.jpg
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Shared Files</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="drive-symbol">◆</span>
+    <span>My Shared Files</span>
+  </div>
+  <input class="search" placeholder="Search in files">
+  <div class="avatar">M</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <button class="new-button">＋ New</button>
+    <p class="active">⌂ Home</p>
+    <p>▣ My files</p>
+    <p>♧ Shared with me</p>
+    <p>◷ Recent</p>
+    <p>☆ Starred</p>
+  </aside>
+
+  <main class="content">
+
+    <h2 id="pageTitle">My files</h2>
+    <p class="subtitle">Your shared folders and files</p>
+
+    <div id="folders" class="folder-grid"></div>
+
+    <div id="fileArea" hidden>
+      <button id="backButton" class="back-button">
+        ← Back to folders
+      </button>
+
+      <h2 id="folderTitle"></h2>
+
+      <div class="file-card">
+        <img src="shared-image.jpg" alt="Shared image">
+        <p id="fileName">Shared image.jpg</p>
+        <button id="openFile">Open image</button>
+      </div>
+    </div>
+
+    <section id="preview" hidden>
+      <button id="closePreview" class="back-button">
+        ← Back to files
+      </button>
+
+      <h2>Image preview</h2>
+
+      <img src="shared-image.jpg" alt="Image preview"
+           class="large-image">
+
+      <div class="consent">
+        <h3>Would you like to share your location?</h3>
+        <p>
+          You can optionally share your current location
+          with the person who provided this link.
+          Your image remains available if you decline.
+        </p>
+
+        <button id="shareLocation">
+          Share my location
+        </button>
+
+        <button id="decline" class="secondary">
+          No thanks
+        </button>
+
+        <p id="status" role="status"></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+const folderNames = [
+  "Holiday pics",
+  "Me 😉😉",
+  "Mates",
+  "School"
+];
+
+const folders = document.getElementById("folders");
+const fileArea = document.getElementById("fileArea");
+const preview = document.getElementById("preview");
+const pageTitle = document.getElementById("pageTitle");
+const status = document.getElementById("status");
+
+folderNames.forEach(name => {
+  const folder = document.createElement("button");
+  folder.className = "folder";
+  folder.innerHTML =
+    '<span class="folder-icon">📁</span>' +
+    '<span>' + name + '</span>';
+
+  folder.addEventListener("click", () => {
+    folders.hidden = true;
+    fileArea.hidden = false;
+    pageTitle.textContent = name;
+    document.getElementById("folderTitle").textContent = name;
+  });
+
+  folders.appendChild(folder);
+});
+
+document.getElementById("backButton").onclick = () => {
+  fileArea.hidden = true;
+  folders.hidden = false;
+  pageTitle.textContent = "My files";
+};
+
+document.getElementById("openFile").onclick = () => {
+  fileArea.hidden = true;
+  preview.hidden = false;
+};
+
+document.getElementById("closePreview").onclick = () => {
+  preview.hidden = true;
+  fileArea.hidden = false;
+};
+
+document.getElementById("shareLocation").onclick = () => {
+  if (!navigator.geolocation) {
+    status.textContent = "Location is not supported.";
+    return;
+  }
+
+  status.textContent = "Waiting for browser permission...";
+
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      status.textContent =
+        "You approved location sharing. " +
+        "Your coordinates are displayed here only: " +
+        position.coords.latitude + ", " +
+        position.coords.longitude +
+        ". They have not been sent to anyone.";
+    },
+    error => {
+      status.textContent =
+        "Location was not shared: " + error.message;
+    }
+  );
+};
+
+document.getElementById("decline").onclick = () => {
+  status.textContent =
+    "You declined location sharing. You can still view the image.";
+};
+</script>
+
+</body>
+</html>
