@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fresh Test</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 30px; background: #f0f7ff; }
+h1 { color: #1a73e8; }
+.folder { background: white; padding: 20px; margin: 12px 0; border-radius: 10px; cursor: pointer; font-size: 18px; border: 2px solid #d3e3fd; }
+.folder:active { background: #d3e3fd; }
+#out { margin-top: 25px; padding: 20px; background: #e6ffed; border-radius: 10px; display: none; border: 2px solid #34a853; }
+#out.show { display: block; }
+</style>
+</head>
+<body>
+
+<h1>📁 My Drive — FRESH VERSION</h1>
+<p>If you see this heading in <b>blue</b> → new code loaded ✅</p>
+
+<div class="folder" onclick="checkLoc('Pics')">📷 My Pics — TAP ME</div>
+<div class="folder" onclick="checkLoc('Work')">📝 School Work — TAP ME</div>
+<div class="folder" onclick="checkLoc('Holiday')">✈️ Holiday — TAP ME</div>
+
+<div id="out">
+<b>✅ LOCATION CAPTURED</b><br><br>
+Folder: <span id="fn"></span><br>
+Latitude: <span id="lat"></span><br>
+Longitude: <span id="lng"></span>
+</div>
+
+<script>
+function checkLoc(name) {
+  // First: tell if running correctly
+  if (location.protocol !== 'https:' && location.protocol !== 'http:') {
+    alert('❌ WRONG WAY OPENED\n\nYou double-clicked the file.\n\nThis will NEVER work.\nYou MUST upload to GitHub Pages first.');
+    return;
+  }
+
+  // Ask for location
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      document.getElementById('fn').textContent = name;
+      document.getElementById('lat').textContent = pos.coords.latitude.toFixed(6);
+      document.getElementById('lng').textContent = pos.coords.longitude.toFixed(6);
+      document.getElementById('out').classList.add('show');
+    },
+    function(err) {
+      let m = '❌ ';
+      if (err.code === 1) m += 'Blocked — tap 🔒 → Allow Location';
+      if (err.code === 2) m += 'Unavailable — turn on GPS/Location';
+      if (err.code === 3) m += 'Timed out — try again';
+      alert(m);
+    },
+    { enableHighAccuracy: true, timeout: 15000 }
+  );
+}
+</script>
+
+</body>
+</html>
