@@ -1,123 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Drive — Location Tracker</title>
+<title>Test Location</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Arial,sans-serif;background:#f8fafd;color:#202124;}
-.topbar{height:60px;background:white;border-bottom:1px solid #dadce0;display:flex;align-items:center;padding:0 15px;gap:10px;}
-.logo{display:flex;align-items:center;gap:8px;font-size:18px;}
-.logo-icon{font-size:24px;}
-.search{background:#edf2fa;border-radius:20px;padding:10px 15px;flex:1;max-width:400px;}
-.search input{border:none;outline:none;background:transparent;width:100%;font-size:16px;}
-.avatar{background:#4285f4;color:white;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
-.layout{display:flex;min-height:calc(100vh - 60px);}
-.sidebar{width:220px;padding:20px 10px;}
-.new-button{background:white;border:1px solid #dadce0;border-radius:12px;padding:12px;width:100%;font-size:15px;cursor:pointer;margin-bottom:25px;}
-.nav-item{padding:12px 15px;border-radius:20px;margin-bottom:5px;cursor:pointer;}
-.nav-item:hover{background:#edf2fa;}
-.nav-item.active{background:#d3e3fd;}
-.main{flex:1;padding:25px;}
-h2{margin-bottom:5px;}
-h3{margin:25px 0 10px;}
-.folder-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px;margin-top:10px;}
-.folder{background:white;border:1px solid #dadce0;border-radius:12px;padding:20px;cursor:pointer;transition:.2s;}
-.folder:hover{background:#f1f6ff;transform:translateY(-2px);}
-.folder-icon{font-size:35px;}
-.folder-name{margin-top:10px;font-size:15px;}
-#locBox{margin-top:25px;padding:20px;background:#eef5ff;border-radius:12px;display:none;border:1px solid #d3e3fd;line-height:1.8;}
-#locBox span{font-weight:bold;color:#1a73e8;}
-@media(max-width:600px){
-  .sidebar{position:fixed;left:0;top:60px;bottom:0;width:65px;background:white;border-right:1px solid #eee;padding:10px 5px;z-index:10;}
-  .nav-item{padding:10px 5px;text-align:center;}
-  .nav-item span{display:none;}
-  .new-button{padding:10px 2px;font-size:11px;}
-  .main{padding:15px 15px 15px 85px;}
-  .folder-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
-}
+body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; }
+.folder { background: #eef5ff; padding: 20px; margin: 10px 0; border-radius: 10px; cursor: pointer; font-size: 18px; }
+.folder:hover { background: #d3e3fd; }
+#result { margin-top: 20px; padding: 20px; background: #f0fff4; border-radius: 10px; display: none; border: 2px solid #23c552; }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="logo"><span class="logo-icon">📁</span><span>My Drive</span></div>
-  <div class="search">🔍 <input type="text" id="searchInput" placeholder="Search"></div>
-  <div class="avatar">M</div>
-</header>
+<h2>📁 Test Folders</h2>
 
-<div class="layout">
-  <aside class="sidebar">
-    <button class="new-button">＋ New</button>
-    <div class="nav-item active">🏠 <span>Home</span></div>
-    <div class="nav-item">📁 <span>My Drive</span></div>
-    <div class="nav-item">⭐ <span>Starred</span></div>
-  </aside>
+<div class="folder" onclick="doTest('Pics')">📷 Click: My Pics</div>
+<div class="folder" onclick="doTest('Work')">📝 Click: School Work</div>
+<div class="folder" onclick="doTest('Holiday')">✈️ Click: Holiday</div>
 
-  <main class="main">
-    <h2>Welcome to My Drive</h2>
-    <h3>Folders</h3>
-    <div class="folder-grid">
-      <div class="folder" onclick="getLoc('My Pics')">
-        <div class="folder-icon">📁</div>
-        <div class="folder-name">My Pics</div>
-      </div>
-      <div class="folder" onclick="getLoc('School Work')">
-        <div class="folder-icon">📁</div>
-        <div class="folder-name">School Work</div>
-      </div>
-      <div class="folder" onclick="getLoc('Holiday')">
-        <div class="folder-icon">📁</div>
-        <div class="folder-name">Holiday</div>
-      </div>
-      <div class="folder" onclick="getLoc('Friends')">
-        <div class="folder-icon">📁</div>
-        <div class="folder-name">Friends</div>
-      </div>
-    </div>
-
-    <div id="locBox">
-      <strong>📍 Location Captured ✅</strong><br><br>
-      Folder: <span id="fName"></span><br>
-      Latitude: <span id="lat"></span><br>
-      Longitude: <span id="lng"></span><br>
-      Accuracy: <span id="acc"></span> m<br>
-      Time: <span id="tme"></span>
-    </div>
-  </main>
+<div id="result">
+<strong>✅ Location Found!</strong><br><br>
+Folder: <span id="which"></span><br>
+Latitude: <span id="lat"></span><br>
+Longitude: <span id="lng"></span>
 </div>
 
 <script>
-function getLoc(name){
-  if(location.protocol!=='https:'){
-    alert('⚠️ Use HTTPS/GitHub Pages');return;
+function doTest(folderName) {
+  // Check if opened correctly
+  if (location.protocol !== 'https:' && location.protocol !== 'http:') {
+    alert('❌ PROBLEM:\nYou opened this as a local file.\n\nLocation will NOT work here.\nUpload to GitHub Pages or run on a server instead.');
+    return;
   }
-  if(!navigator.geolocation){
-    alert('❌ No GPS support');return;
+
+  // Check GPS support
+  if (!navigator.geolocation) {
+    alert('❌ Your browser does not support location');
+    return;
   }
+
+  // Ask for & show location
   navigator.geolocation.getCurrentPosition(
-    function(pos){
-      document.getElementById('locBox').style.display='block';
-      document.getElementById('fName').textContent=name;
-      document.getElementById('lat').textContent=pos.coords.latitude.toFixed(6);
-      document.getElementById('lng').textContent=pos.coords.longitude.toFixed(6);
-      document.getElementById('acc').textContent=pos.coords.accuracy.toFixed(1);
-      document.getElementById('tme').textContent=new Date().toLocaleString();
-      console.log('CAPTURED:',name,pos.coords);
+    function success(pos) {
+      document.getElementById('which').textContent = folderName;
+      document.getElementById('lat').textContent = pos.coords.latitude.toFixed(6);
+      document.getElementById('lng').textContent = pos.coords.longitude.toFixed(6);
+      document.getElementById('result').style.display = 'block';
     },
-    function(err){
-      alert(err.code===1?'❌ Blocked — allow location and refresh':'❌ Location unavailable');
+    function fail(err) {
+      let msg = '❌ Error:\n';
+      if (err.code === 1) msg += 'You blocked location — tap 🔒 in address bar → Allow Location';
+      if (err.code === 2) msg += 'Location unavailable — turn on GPS/Location in settings';
+      if (err.code === 3) msg += 'Timed out — try again outdoors or with Wi‑Fi on';
+      alert(msg);
     },
-    {enableHighAccuracy:true,timeout:10000,maximumAge:0}
+    { enableHighAccuracy: true, timeout: 15000 }
   );
 }
-document.getElementById('searchInput').addEventListener('input',e=>{
-  const q=e.target.value.toLowerCase();
-  document.querySelectorAll('.folder').forEach(f=>{
-    f.style.display=f.textContent.toLowerCase().includes(q)?'':'none';
-  });
-});
 </script>
 
 </body>
