@@ -1,0 +1,71 @@
+<!-- VERSION 3 — FRESH UPDATE -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Drive — Location Tracker</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 25px; background: #f0f7ff; margin: 0; }
+h1 { color: #1a73e8; text-align: center; }
+.folder { background: white; padding: 20px; margin: 12px auto; border-radius: 10px; cursor: pointer; font-size: 18px; border: 2px solid #d3e3fd; max-width: 400px; transition: 0.2s; }
+.folder:hover { background: #d3e3fd; }
+.folder:active { transform: scale(0.98); }
+#out { margin-top: 25px; padding: 20px; background: #e6ffed; border-radius: 10px; display: none; border: 2px solid #34a853; max-width: 400px; margin-left: auto; margin-right: auto; }
+#out.show { display: block; }
+p.note { text-align: center; color: #5f6368; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<h1>📁 My Drive</h1>
+<p class="note">Tap any folder below</p>
+
+<div class="folder" onclick="checkLoc('My Pics')">📷 My Pics</div>
+<div class="folder" onclick="checkLoc('School Work')">📝 School Work</div>
+<div class="folder" onclick="checkLoc('Holiday')">✈️ Holiday</div>
+<div class="folder" onclick="checkLoc('Friends')">👥 Friends</div>
+
+<div id="out">
+<strong>✅ LOCATION CAPTURED</strong><br><br>
+Folder: <span id="fn"></span><br>
+Latitude: <span id="lat"></span><br>
+Longitude: <span id="lng"></span>
+</div>
+
+<script>
+function checkLoc(folderName) {
+  // Check opened correctly
+  if (location.protocol !== 'https:' && location.protocol !== 'http:') {
+    alert('❌ ERROR\n\nOpen via your https:// link only — not from your computer files.');
+    return;
+  }
+
+  // Check location support
+  if (!navigator.geolocation) {
+    alert('❌ Your browser does not support location');
+    return;
+  }
+
+  // Get and show location
+  navigator.geolocation.getCurrentPosition(
+    function success(pos) {
+      document.getElementById('fn').textContent = folderName;
+      document.getElementById('lat').textContent = pos.coords.latitude.toFixed(6);
+      document.getElementById('lng').textContent = pos.coords.longitude.toFixed(6);
+      document.getElementById('out').classList.add('show');
+    },
+    function fail(err) {
+      let msg = '❌ ';
+      if (err.code === 1) msg += 'Blocked — tap 🔒 in address bar → Allow Location';
+      else if (err.code === 2) msg += 'Unavailable — turn on GPS/Location in Settings';
+      else if (err.code === 3) msg += 'Timed out — try again outdoors';
+      alert(msg);
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
+}
+</script>
+
+</body>
+</html>
