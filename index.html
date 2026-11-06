@@ -68,16 +68,11 @@
             <div class="folder-name">Ex</div>
         </div>
     </div>
-</div>
 
-<div id="folderPage" class="folder-page">
-    <button class="back-button" onclick="goHome()">← Back to Drive</button>
-    <h2 id="folderTitle">📁 Folder</h2>
-    <div id="folderContents"></div>
-    
+    <!-- Location display stays on the same page -->
     <div id="locBox" style="margin-top:25px; padding:18px; background:#eef5ff; border-radius:10px; display:none; border:1px solid #d3e3fd;">
-        <strong>📍 Device Location</strong><br><br>
-        Folder: <span id="whichFolder" style="font-weight:bold;"></span><br>
+        <strong>📍 Device Location Captured</strong><br><br>
+        Folder selected: <span id="whichFolder" style="font-weight:bold;"></span><br>
         Latitude: <span id="gotLat" style="font-family:monospace; color:#1a73e8;"></span><br>
         Longitude: <span id="gotLng" style="font-family:monospace; color:#1a73e8;"></span><br>
         Accuracy: <span id="gotAcc"></span> meters<br>
@@ -114,15 +109,7 @@ function handleFolderClick(folderName) {
             const accuracy = position.coords.accuracy;
             const time = new Date().toLocaleString();
 
-            document.getElementById("homePage").style.display = "none";
-            document.getElementById("folderPage").style.display = "block";
-            document.getElementById("folderTitle").textContent = "📁 " + folderName;
-
-            const files = folderContents[folderName] || [];
-            document.getElementById("folderContents").innerHTML = files.length
-                ? `<ul style="list-style:none; padding:0;">${files.map(f => `<li style="padding:10px 0; border-bottom:1px solid #eee;">📄 ${f}</li>`).join('')}</ul>`
-                : '<p>This folder is empty.</p>';
-
+            // Show location data directly on the home page
             document.getElementById('locBox').style.display = 'block';
             document.getElementById('whichFolder').textContent = folderName;
             document.getElementById('gotLat').textContent = lat.toFixed(6);
@@ -153,12 +140,6 @@ function handleFolderClick(folderName) {
             maximumAge: 0
         }
     );
-}
-
-function goHome() {
-    document.getElementById("folderPage").style.display = "none";
-    document.getElementById("homePage").style.display = "block";
-    document.getElementById('locBox').style.display = 'none';
 }
 
 document.getElementById('searchInput').addEventListener('input', e => {
