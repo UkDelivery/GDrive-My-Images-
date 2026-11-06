@@ -1,4 +1,4 @@
-<!-- VERSION 5 — YOUR CUSTOM NAMES -->
+<!-- VERSION 5.1 — FINAL CUSTOM FOLDERS -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,9 +10,10 @@
 body { font-family: Arial, sans-serif; padding: 25px; background: #f8fafd; }
 .topbar {height:60px; background:white; border-bottom:1px solid #dadce0; display:flex; align-items:center; padding:0 15px; gap:10px; margin:-25px -25px 30px -25px;}
 .logo {display:flex; align-items:center; gap:8px; font-size:18px; padding-left:10px;}
-h1 { color: #202124; text-align: left; font-size: 22px; margin-bottom: 5px; }
 .heading-row {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+h2 {font-size:22px; color:#202124;}
 .view-toggle {color:#5f6368; font-size:20px;}
+h3 {margin:10px 0;}
 .folder-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:16px;}
 .folder { background: white; padding: 20px; border-radius: 12px; cursor: pointer; border: 1px solid #dadce0; transition: 0.2s; }
 .folder:hover { background: #f1f6ff; transform: translateY(-2px); }
@@ -38,7 +39,7 @@ h1 { color: #202124; text-align: left; font-size: 22px; margin-bottom: 5px; }
   <span class="view-toggle">☷　▦</span>
 </div>
 
-<h3 style="margin:10px 0;">Folders</h3>
+<h3>Folders</h3>
 <div class="folder-grid">
   <div class="folder" onclick="checkLoc('My Pic 😈😜')">
     <div class="folder-icon">📁</div>
