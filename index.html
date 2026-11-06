@@ -1,4 +1,4 @@
-<!-- VERSION 7.1 — PREMIUM DRIVE UI (NO EXTERNAL DEPENDENCIES) -->
+<!-- VERSION 7.2 — ALL FOLDERS IN ONE BOX -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -258,102 +258,48 @@ body {
   color: #1f2937;
 }
 
-.view-options {
-  display: flex;
-  gap: 8px;
-}
-
-.view-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  background: white;
-  cursor: pointer;
-  font-size: 18px;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s ease;
-}
-
-.view-btn:hover,
-.view-btn.active {
-  border-color: #1a73e8;
-  color: #1a73e8;
-  background: #f0f4ff;
-}
-
-/* Folder Grid */
-.folder-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 18px;
-}
-
-.folder {
+/* SINGLE BOX CONTAINING ALL FOLDERS */
+.all-folders-box {
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
-  padding: 18px;
-  cursor: pointer;
-  transition: 0.25s ease;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.single-folder {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: relative;
-  overflow: hidden;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  margin-bottom: 8px;
 }
 
-.folder::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, #1a73e8, #34d399);
-  opacity: 0;
-  transition: 0.25s ease;
+.single-folder:last-child {
+  margin-bottom: 0;
 }
 
-.folder:hover {
-  transform: translateY(-4px);
-  border-color: #1a73e8;
-  box-shadow: 0 12px 24px rgba(26, 115, 232, 0.18);
+.single-folder:hover {
+  background: #f0f4ff;
+  transform: translateX(4px);
 }
 
-.folder:hover::before {
-  opacity: 1;
+.single-folder-icon {
+  font-size: 32px;
 }
 
-.folder-icon {
-  font-size: 48px;
-  margin-bottom: 14px;
-  transition: 0.25s ease;
-}
-
-.folder:hover .folder-icon {
-  transform: scale(1.08);
-}
-
-.folder-name {
-  font-size: 15px;
+.single-folder-name {
+  font-size: 16px;
   font-weight: 600;
-  word-break: break-word;
   color: #1f2937;
-  margin-bottom: 4px;
-}
-
-.folder-meta {
-  font-size: 13px;
-  color: #9ca3af;
 }
 
 /* Result Card */
 #out {
-  margin-top: 32px;
+  margin-top: 24px;
   padding: 24px;
   background: white;
   border: 1px solid #e5e7eb;
@@ -411,10 +357,6 @@ body {
   .sidebar.open {
     left: 0;
   }
-
-  .folder-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
 }
 
 @media (max-width: 600px) {
@@ -436,11 +378,6 @@ body {
 
   .welcome-card h1 {
     font-size: 22px;
-  }
-
-  .folder-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
   }
 }
 </style>
@@ -505,36 +442,34 @@ body {
   <!-- Content -->
   <div class="content">
     <div class="welcome-card">
-      <h1>Welcome back Lacey 👋</h1>
-      <p>Access your folders</p>
+      <h1>Welcome back Lacey Shaw 👋</h1>
+      <p>Access your folders click to unlock.</p>
     </div>
 
     <div class="section-header">
       <h2 class="section-title">Folders</h2>
-      <div class="view-options">
-        <button class="view-btn active" title="Grid">▦</button>
-        <button class="view-btn" title="List">☰</button>
-      </div>
     </div>
 
-    <div class="folder-grid">
-      <div class="folder" onclick="checkLoc('My Pic 😈😜')">
-        <div class="folder-icon">📁</div>
-        <div class="folder-name">My Pic 😈😜</div>
-        <div class="folder-meta">Opened just now</div>
+    <!-- ALL 4 FOLDERS INSIDE ONE SINGLE BOX -->
+    <div class="all-folders-box">
+      <div class="single-folder" onclick="checkLoc('My Pic 😈😜')">
+        <div class="single-folder-icon">📁</div>
+        <div class="single-folder-name">My Pic 😈😜</div>
+      </div>
 
-        <div class="folder-icon">📁</div>
-        <div class="folder-name">Friends Pic 😍</div>
+      <div class="single-folder" onclick="checkLoc('Friends Pic 😍')">
+        <div class="single-folder-icon">📁</div>
+        <div class="single-folder-name">Friends Pic 😍</div>
+      </div>
 
+      <div class="single-folder" onclick="checkLoc('School Pic 📙')">
+        <div class="single-folder-icon">📁</div>
+        <div class="single-folder-name">School Pic 📙</div>
+      </div>
 
-      <div class="folder" onclick="checkLoc('School Pic 📙')">
-        <div class="folder-icon">📁</div>
-        <div class="folder-name">School Pic 📙</div>
-
-
-      <div class="folder" onclick="checkLoc('Ex😡😠')">
-        <div class="folder-icon">📁</div>
-        <div class="folder-name">Ex😡😠</div>
+      <div class="single-folder" onclick="checkLoc('Ex😡😠')">
+        <div class="single-folder-icon">📁</div>
+        <div class="single-folder-name">Ex😡😠</div>
       </div>
     </div>
 
